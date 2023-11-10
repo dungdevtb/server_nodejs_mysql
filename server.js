@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const db = require("./model");
-const router = require("./routes/tutorial.routes.js");
+const routes = require("./routes");
 
 const app = express();
 
@@ -21,11 +21,10 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to my application" });
 });
 
-// require("./routes/tutorial.routes.js")(app);
-app.use(router);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(routes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

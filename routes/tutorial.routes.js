@@ -1,24 +1,27 @@
-const tutorials = require("../controllers/tutorial.controller");
-var router = require("express").Router();
+const tutorialsController = require("../controllers/tutorial.controller");
+// var router = require("express").Router();
+const { Router } = require("express");
+const { Response } = require("../config/handle_response");
 
-router.use("/api/tutorial", tutorials.findAll);
-// module.exports = (app) => {
-//   app.use("/api/tutorial", router);
+const svRouter = new Router();
 
-//   //find all Tutorials
-//   router.get("/get_all_tutorials", tutorials.findAll);
+svRouter.get(
+  "/get_all_tutorials",
+  Response(tutorialsController.getAllTutorials)
+);
 
-//   //find a single Tutorial
-//   router.get("/get_tutorial/:id", tutorials.findOne);
+svRouter.get(
+  "/get_tutorial/:id",
+  Response(tutorialsController.getTutorialById)
+);
 
-//   //Create a new Tutorial
-//   router.post("/create_tutorial", tutorials.create);
+svRouter.post("/create_tutorial", Response(tutorialsController.createTutorial));
 
-//   //Update a Tutorial
-//   router.put("/update_tutorial/:id", tutorials.update);
+svRouter.put("/update_tutorial", Response(tutorialsController.updateTutorial));
 
-//   //Delete a Tutorial
-//   router.delete("/delete_tutorial/:id", tutorials.delete);
-// };
+svRouter.delete(
+  "/delete_tutorial/:id",
+  Response(tutorialsController.deleteTutorial)
+);
 
-module.exports = router;
+module.exports = svRouter;
