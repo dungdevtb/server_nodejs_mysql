@@ -1,6 +1,7 @@
-const db = require("../model");
+// const db = require("../model/dbconnect");
+// const Tutorial = db.tutorials;
 const { Op } = require("sequelize");
-const Tutorial = db.tutorials;
+const { Tutorial } = require("../model");
 
 const getAllTutorials = async (req, res) => {
   const title = req.query.title;

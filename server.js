@@ -1,8 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const db = require("./model");
 const routes = require("./routes");
+require("dotenv").config();
+// const db = require("./model/dbconnect");
 
 const app = express();
 
@@ -11,7 +12,7 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-db.sequelize.sync();
+// db.sequelize.sync();
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("Drop and re-sync db.");
 // });

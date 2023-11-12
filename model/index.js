@@ -1,22 +1,13 @@
-const dbConfig = require("../config/db.config.js");
+const Tutorial = require("./tutorial.model");
 
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  operatorsAliases: false,
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle,
-  },
-});
-const db = {};
+const { sequelize } = require("../config/db.config");
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+Tutorial.sync();
 
-db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
+for (const m in sequelize.models) {
+  sequelize.models[m].association();
+}
 
-module.exports = db;
+module.exports = {
+  Tutorial,
+};
