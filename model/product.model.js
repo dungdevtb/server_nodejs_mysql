@@ -2,8 +2,14 @@ const { sequelize } = require("../config/connect");
 const BaseModel = require("./BaseModel");
 const { DataTypes } = require("sequelize");
 
-class Tutorial extends BaseModel {
-  static association() {}
+class Product extends BaseModel {
+  static association() {
+    const Category = require("./category.model");
+    this.belongsTo(Category, {
+      foreignKey: "category_id",
+      as: "category",
+    });
+  }
 }
 
 const attributes = {
@@ -13,7 +19,7 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
   },
-  title: {
+  name: {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
@@ -21,8 +27,12 @@ const attributes = {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
-  published: {
-    type: DataTypes.TINYINT(1),
+  quantity: {
+    type: DataTypes.INTEGER(10).UNSIGNED,
+    allowNull: true,
+  },
+  category_id: {
+    type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
   },
   del: {
@@ -41,23 +51,9 @@ const attributes = {
 };
 
 const options = {
-  tableName: "tutorial",
+  tableName: "product",
 };
 
-Tutorial.init(attributes, { ...options, sequelize });
+Product.init(attributes, { ...options, sequelize });
 
-module.exports = Tutorial;
-
-// module.exports = (sequelize, Sequelize) => {
-//   return sequelize.define("tutorial", {
-//     title: {
-//       type: Sequelize.STRING,
-//     },
-//     description: {
-//       type: Sequelize.STRING,
-//     },
-//     published: {
-//       type: Sequelize.BOOLEAN,
-//     },
-//   });
-// };
+module.exports = Product;

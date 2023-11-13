@@ -2,7 +2,7 @@ const { sequelize } = require("../config/connect");
 const BaseModel = require("./BaseModel");
 const { DataTypes } = require("sequelize");
 
-class Tutorial extends BaseModel {
+class Category extends BaseModel {
   static association() {}
 }
 
@@ -13,16 +13,12 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
   },
-  title: {
+  name: {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
   description: {
     type: DataTypes.STRING(255),
-    allowNull: true,
-  },
-  published: {
-    type: DataTypes.TINYINT(1),
     allowNull: true,
   },
   del: {
@@ -41,23 +37,9 @@ const attributes = {
 };
 
 const options = {
-  tableName: "tutorial",
+  tableName: "category",
 };
 
-Tutorial.init(attributes, { ...options, sequelize });
+Category.init(attributes, { ...options, sequelize });
 
-module.exports = Tutorial;
-
-// module.exports = (sequelize, Sequelize) => {
-//   return sequelize.define("tutorial", {
-//     title: {
-//       type: Sequelize.STRING,
-//     },
-//     description: {
-//       type: Sequelize.STRING,
-//     },
-//     published: {
-//       type: Sequelize.BOOLEAN,
-//     },
-//   });
-// };
+module.exports = Category;

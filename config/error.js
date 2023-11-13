@@ -18,6 +18,7 @@ const ERROR_MESSAGE = {
   REGISTER_EXIST_MOBILE: "ERR_0016",
   REGISTER_INVALID_MOBILE: "ERR_0017",
   REGISTER_EXIST_EMAIL: "ERR_0018",
+  DATA_NOT_FOUND: "ERR_0019",
 
   ERR_0000: "Có lỗi xảy ra!",
   ERR_0001: "Vui lòng đăng xuất và đăng nhập lại!",
@@ -38,6 +39,7 @@ const ERROR_MESSAGE = {
   ERR_0016: "Số điện thoại đã tồn tại",
   ERR_0017: "Số điện thoại đăng ký không hợp lệ",
   ERR_0018: "Email đăng ký không hợp lệ",
+  ERR_0019: "Không tìm thấy dữ liệu",
 };
 
 module.exports = {
