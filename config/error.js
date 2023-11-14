@@ -40,6 +40,12 @@ const ERROR_MESSAGE = {
   ERR_0017: "Số điện thoại đăng ký không hợp lệ",
   ERR_0018: "Email đăng ký không hợp lệ",
   ERR_0019: "Không tìm thấy dữ liệu",
+
+  VALIDATION_ERROR: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  SERVER_ERROR: 500,
 };
 
 module.exports = {
