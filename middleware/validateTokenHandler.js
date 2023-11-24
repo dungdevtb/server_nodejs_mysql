@@ -1,41 +1,30 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const _CONF = require("../config/auth.config");
 
-const validateToken = asyncHandler(async (req, res, next) => {
-  let token;
 
-  //lấy phần Authorization của header = Bearer accessToken
-  let authHeader = req.body.accessToken || req.query.accessToken || req.headers['x-access-token']
 
-  // let authHeader = req.headers.token;
+const checkToken = (req, res, next) => {
+  const token = req.body.token || req.query.token || req.headers['token']
 
-  console.log(authHeader, "authHeaderrrrrrrr");
-
-  if (authHeader && authHeader.startsWith("Bearer")) {
-    token = authHeader.split(" ")[1]; //;gán token = accessToken vì split('')[0]=Bearer
-
-    //jwt.verify(token, secretOrPublicKey, [options, callback]) - xác minh token nhận dk khi ng dùng truyền vào
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+  //decode token
+  if (token) {
+    //verifies secret and checks exp
+    jwt.verify(token, _CONF.SECRET, (err, decoded) => {
       if (err) {
-        res.status(401);
-        throw new Error("User is not authorized");
+        console.error(err.toString());
+        return res.status(401).json({ "error": true, "message": "Unauthorized access", err });
       }
-      //   console.log(decoded);
-      req.user = decoded.user;
+      req.decoded = decoded;
       next();
+    })
+  } else {
+    return res.status(403).send({
+      "error": true,
+      "message": "No token provided!"
     });
-
-    console.log(
-      token,
-      "tokennnnnnnnnnnnnnnnnnn",
-    );
-
-    if (!token) {
-      res.status(401);
-      throw new Error("User is not authorized or token is missing");
-    }
   }
-});
+}
 
-module.exports = validateToken;
+module.exports = { checkToken };

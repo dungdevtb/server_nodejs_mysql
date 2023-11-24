@@ -20,7 +20,7 @@ const register = asyncHandler(async (req, res) => {
   });
   if (userAvailable) {
     res.status(400);
-    throw new Error("User already registered!");
+    throw new Error("User has registered for this email!");
   }
 
   //register: Tạo User ms
@@ -33,15 +33,14 @@ const register = asyncHandler(async (req, res) => {
     password: hashPassword,
   });
 
-  // console.log(`User created ${user}`);
-  // if (user) {
-  //   res.status(201).json({ _id: user.id, email: user.email });
-  // } else {
-  //   res.status(400);
-  //   throw new Error("User data us not valid");
-  // }
-  // res.json({ message: "Register user" });
-  return user;
+  return {
+    message: "User created successfully!",
+    user: {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    }
+  };
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -71,15 +70,28 @@ const login = asyncHandler(async (req, res) => {
           id: user.id,
         },
       },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "10m" } //token sẽ hết hạn trong 10phut
+      // process.env.ACCESS_TOKEN_SECRET,
+      _CONF.SECRET,
+      { expiresIn: _CONF.tokenLife } //token sẽ hết hạn 
+    );
+    const refreshToken = jwt.sign(
+      {
+        //truyền vào payload
+        user: {
+          username: user.username,
+          email: user.email,
+          id: user.id,
+        },
+      },
+      _CONF.SECRET_REFRESH,
+      { expiresIn: _CONF.refreshTokenLife }
     );
 
-    // res.status(200).json({ accessToken });
-    return { accessToken: accessToken };
+    return {
+      token: accessToken,
+      refreshToken: refreshToken
+    };
   } else {
-    // res.status(401);
-    // throw new Error("Email or password is not valid");
     return {
       status: 401,
       message: "Email or password is not valid",
@@ -88,9 +100,18 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const profile = asyncHandler(async (req, res) => {
-  // res.json({ message: "Profile user" });
-  // const User
+  const { id } = req.query
+  const user = await User.findOne({
+    where: {
+      id: id,
+    },
+  });
   return {
+    user: {
+      id: user.id,
+      username: user.username,
+      email: user.email
+    },
     message: "Profile user",
   };
 });
