@@ -5,6 +5,7 @@ const User = require("./user.model");
 const Role = require("./role.model");
 const UserRole = require("./userRole.model");
 const RefreshToken = require("./refreshToken.model");
+const Crawl = require("./crawl.model");
 
 Tutorial.sync(); //create table
 Product.sync();
@@ -13,6 +14,7 @@ User.sync();
 Role.sync();
 UserRole.sync();
 RefreshToken.sync();
+Crawl.sync();
 
 const { sequelize } = require("../config/db.config"); //call connect
 for (const m in sequelize.models) {
@@ -27,4 +29,5 @@ module.exports = {
   Role,
   UserRole,
   RefreshToken,
+  Crawl,
 };

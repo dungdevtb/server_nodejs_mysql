@@ -6,10 +6,11 @@ const validateToken = asyncHandler(async (req, res, next) => {
   let token;
 
   //lấy phần Authorization của header = Bearer accessToken
-  // let authHeader = req.headers.Authorization || req.headers.authorization;
+  let authHeader = req.body.accessToken || req.query.accessToken || req.headers['x-access-token']
 
-  let authHeader = req.headers.token;
-  console.log(authHeader, "authHeader", process.env.ACCESS_TOKEN_SECRET);
+  // let authHeader = req.headers.token;
+
+  console.log(authHeader, "authHeaderrrrrrrr");
 
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1]; //;gán token = accessToken vì split('')[0]=Bearer
@@ -28,7 +29,6 @@ const validateToken = asyncHandler(async (req, res, next) => {
     console.log(
       token,
       "tokennnnnnnnnnnnnnnnnnn",
-      process.env.ACCESS_TOKEN_SECRET
     );
 
     if (!token) {

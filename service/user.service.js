@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { User } = require("../model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const _CONF = require("../config/auth.config");
 require("dotenv").config();
 
 const register = asyncHandler(async (req, res) => {
@@ -87,7 +88,11 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const profile = asyncHandler(async (req, res) => {
-  res.json({ message: "Profile user" });
+  // res.json({ message: "Profile user" });
+  // const User
+  return {
+    message: "Profile user",
+  };
 });
 
 module.exports = { register, login, profile };
