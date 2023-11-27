@@ -20,6 +20,7 @@
   "homepage": "https://github.com/dungdevtb/server_nodejs_mysql#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",

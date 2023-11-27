@@ -1,9 +1,7 @@
-const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const _CONF = require("../config/auth.config");
-
-
+const bcrypt = require('bcryptjs');
 
 const checkToken = (req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['token']
@@ -27,4 +25,22 @@ const checkToken = (req, res, next) => {
   }
 }
 
-module.exports = { checkToken };
+const hashPassWord = (password) => {
+  if (!password) return '';
+
+  return bcrypt.hashSync(password, 10);
+}
+
+const checkPassword = async (password, hashPass) => {
+  if (!hashPass) {
+    return false
+  }
+
+  return bcrypt.compare(password, hashPass);
+}
+
+const generateToken = async (data, secretKey = _CONF.SECRET, expiresIn = '30d') => {
+  return jwt.sign(data, secretKey, { expiresIn });
+}
+
+module.exports = { checkToken, hashPassWord, checkPassword, generateToken };

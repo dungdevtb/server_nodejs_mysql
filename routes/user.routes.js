@@ -9,6 +9,8 @@ svRouter.post("/login", Response(UserController.login));
 
 svRouter.post("/register", Response(UserController.register));
 
-svRouter.get("/profile", checkToken, Response(UserController.profile));
+svRouter.get("/api/user/get_profile", checkToken, Response(UserController.getProfile));
+svRouter.post("/api/user/update_profile", checkToken, Response(UserController.updateProfile));
+svRouter.post("/api/user/change_password", checkToken, Response(UserController.changePassword));
 
 module.exports = svRouter;

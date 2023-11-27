@@ -8,12 +8,23 @@ const register = async (req, res) => {
   return userServices.register(req, res);
 };
 
-const profile = async (req, res) => {
-  return userServices.profile(req, res);
+const getProfile = async (req, res) => {
+  return userServices.getProfile(req, res);
 };
+const updateProfile = async (req, res) => {
+  const { data } = req.body
+  return userServices.updateProfile(data);
+};
+
+const changePassword = async (req, res) => {
+  const { data } = req.body
+  return userServices.changePassword(data);
+}
 
 module.exports = {
   login,
   register,
-  profile,
+  getProfile,
+  updateProfile,
+  changePassword
 };

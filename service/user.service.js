@@ -3,6 +3,7 @@ const { User } = require("../model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/auth.config");
+const { checkPassword, hashPassWord, generateToken } = require("../middleware/validateTokenHandler");
 require("dotenv").config();
 
 const register = asyncHandler(async (req, res) => {
@@ -70,7 +71,6 @@ const login = asyncHandler(async (req, res) => {
           id: user.id,
         },
       },
-      // process.env.ACCESS_TOKEN_SECRET,
       _CONF.SECRET,
       { expiresIn: _CONF.tokenLife } //token sẽ hết hạn 
     );
@@ -99,11 +99,12 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-const profile = asyncHandler(async (req, res) => {
+const getProfile = asyncHandler(async (req, res) => {
   const { id } = req.query
   const user = await User.findOne({
     where: {
       id: id,
+      del: 0
     },
   });
   return {
@@ -116,4 +117,55 @@ const profile = asyncHandler(async (req, res) => {
   };
 });
 
-module.exports = { register, login, profile };
+
+const updateProfile = asyncHandler(async (data) => {
+  const accExist = await User.findOne({
+    where: {
+      id: data.id,
+      del: 0
+    },
+  });
+
+  if (!accExist) {
+    throw new Error("User not found!");
+  } else {
+    await accExist.update({
+      email: data.email,
+      username: data.username
+    })
+  }
+
+  return accExist
+})
+
+const changePassword = asyncHandler(async (data) => {
+  const existAccount = await User.findOne({
+    where: {
+      id: data.id,
+      del: 0
+    }
+  })
+
+  if (!existAccount) {
+    throw new Error("Token invalid!")
+  } else {
+    const isValidOld = await checkPassword(data.old_password, existAccount.password)
+    if (!isValidOld) {
+      throw new Error("Sai mật khẩu hiện tại.")
+    }
+    const isValidPass = await checkPassword(data.new_password, existAccount.password)
+    if (isValidPass) {
+      throw new Error("Mật khẩu mới phải khác mật khẩu cũ.")
+    } else {
+      await existAccount.update({
+        password: hashPassWord(data.new_password)
+      })
+    }
+  }
+
+  const token = await generateToken({ id: existAccount.id, check: true, password: existAccount.password.substring(42) });
+
+  return { token }
+})
+
+module.exports = { register, login, getProfile, updateProfile, changePassword };
