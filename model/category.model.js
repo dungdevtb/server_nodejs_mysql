@@ -3,7 +3,13 @@ const BaseModel = require("./BaseModel");
 const { DataTypes } = require("sequelize");
 
 class Category extends BaseModel {
-  static association() {}
+  static association() {
+    const Product = require("./product.model");
+    this.hasMany(Product, {
+      foreignKey: "category_id",
+      as: "products",
+    })
+  }
 }
 
 const attributes = {

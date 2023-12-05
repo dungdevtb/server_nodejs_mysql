@@ -2,7 +2,7 @@ const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
 const { Paging } = require("../config/paging");
 
-const { Category } = require("../model");
+const { Category, Product } = require("../model");
 
 const getAllCategorys = async (data) => {
   const { page, limit, name } = data;
@@ -25,6 +25,13 @@ const getAllCategorys = async (data) => {
       ...where,
     },
     ...paging,
+    include: [
+      {
+        model: Product,
+        as: "products",
+        attributes: ["id", "name"],
+      }
+    ],
     order: [["createdAt", "desc"]],
   });
 

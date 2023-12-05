@@ -6,17 +6,24 @@ const Role = require("./role.model");
 const UserRole = require("./userRole.model");
 const RefreshToken = require("./refreshToken.model");
 const Crawl = require("./crawl.model");
+const Permission = require("./permission.model");
+const RolePermission = require("./rolePermission.model");
 
-Tutorial.sync(); //create table
-Product.sync();
-Category.sync();
-User.sync();
-Role.sync();
-UserRole.sync();
-RefreshToken.sync();
-Crawl.sync();
-
+// Tutorial.sync(); //create table
+// Product.sync();
+// Category.sync();
+// User.sync();
+// Role.sync();
+// UserRole.sync();
+// RefreshToken.sync();
+// Crawl.sync();
 const { sequelize } = require("../config/db.config"); //call connect
+
+// new createTable
+for (const m in sequelize.models) {
+  sequelize.models[m].sync();
+}
+
 for (const m in sequelize.models) {
   sequelize.models[m].association();
 }
@@ -30,4 +37,6 @@ module.exports = {
   UserRole,
   RefreshToken,
   Crawl,
+  Permission,
+  RolePermission,
 };

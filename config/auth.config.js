@@ -1,7 +1,8 @@
 const config = Object.freeze({
   SECRET: "SECRET_TOKEN",
   SECRET_REFRESH: "SECRET_REFRESH_TOKEN",
-  tokenLife: 3600,         // 1 hour
+  // tokenLife: 3600,         // 1 hour
+  tokenLife: 86400,         // 1 hour
   refreshTokenLife: 86400, // 24 hours
 })
 

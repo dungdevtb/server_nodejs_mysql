@@ -3,12 +3,18 @@ const Product = require("./product.routes");
 const category = require("./category.routes");
 const User = require("./user.routes");
 const Crawl = require("./crawl.routes");
+const Permission = require("./permission.routes");
+const Role = require("./role.routes");
 
 const { Router } = require("express");
 const routerApp = new Router();
 
 //register,login profile
 routerApp.use("", User);
+
+//manement permission
+routerApp.use("/api/permission", Permission);
+routerApp.use("/api/role", Role);
 
 routerApp.use("/api/crawl", Crawl);
 routerApp.use("/api/tutorial", Tutorial);
