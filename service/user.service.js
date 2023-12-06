@@ -3,7 +3,7 @@ const { User, UserRole, Role } = require("../model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/auth.config");
-const { checkPassword, hashPassWord, generateToken } = require("../middleware/validateTokenHandler");
+const { checkPassword, hashPassWord, generateToken } = require("../middleware/auth");
 const { Paging } = require("../config/paging");
 const { Op } = require("sequelize");
 require("dotenv").config();

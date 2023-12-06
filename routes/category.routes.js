@@ -2,26 +2,28 @@
 const { CategoryController } = require("../controllers");
 const { Router } = require("express");
 const { Response } = require("../config/handle_response");
-const { checkToken } = require("../middleware/validateTokenHandler");
+const { check_permission } = require("../middleware/auth");
+const { QUAN_LY_DANH_MUC } = require("../middleware/actionDefault");
+
 const svRouter = new Router();
 
 svRouter.get(
   "/get_all_categorys",
-  checkToken,
+  check_permission(QUAN_LY_DANH_MUC),
   Response(CategoryController.getAllCategorys)
 );
 
-svRouter.get("/get_category/:id", checkToken, Response(CategoryController.getCategoryById));
+svRouter.get("/get_category/:id", check_permission(QUAN_LY_DANH_MUC), Response(CategoryController.getCategoryById));
 
 svRouter.post(
   "/create_update_category",
-  checkToken,
+  check_permission(QUAN_LY_DANH_MUC),
   Response(CategoryController.createUpdateCategory)
 );
 
 svRouter.post(
   "/delete_category/:id",
-  checkToken,
+  check_permission(QUAN_LY_DANH_MUC),
   Response(CategoryController.deleteCategory)
 );
 

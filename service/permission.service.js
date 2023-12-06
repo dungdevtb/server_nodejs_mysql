@@ -71,7 +71,7 @@ const createUpdatePermission = async (data) => {
             throw new Error(ERROR_MESSAGE.NOT_FOUND_PERMISSION)
         }
         if (!check_slug) {
-            throw new Error(ERROR_MESSAGE.ERR_0012)
+            throw new Error(ERROR_MESSAGE.PERMISSION_EXISTS)
         }
 
         const update = await check.update({ ...data })
