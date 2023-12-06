@@ -4,11 +4,12 @@ const { DataTypes } = require("sequelize");
 
 class Role extends BaseModel {
   static association() {
-    // const UserRole = require("./userRole.model");
-    // this.hasMany(UserRole, {
-    //   foreignKey: "role_id",
-    //   as: "user_role",
-    // });
+    const UserRole = require("./userRole.model");
+    this.hasOne(UserRole, {
+      foreignKey: "role_id",
+      as: "user_role",
+      targetKey: "id",
+    });
 
     const RolePermission = require("./rolePermission.model");
     this.hasMany(RolePermission, {

@@ -1,9 +1,11 @@
 const asyncHandler = require("express-async-handler");
-const { User } = require("../model");
+const { User, UserRole, Role } = require("../model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/auth.config");
 const { checkPassword, hashPassWord, generateToken } = require("../middleware/validateTokenHandler");
+const { Paging } = require("../config/paging");
+const { Op } = require("sequelize");
 require("dotenv").config();
 
 const register = asyncHandler(async (req, res) => {
@@ -168,4 +170,160 @@ const changePassword = asyncHandler(async (data) => {
   return { token }
 })
 
-module.exports = { register, login, getProfile, updateProfile, changePassword };
+const getListUser = asyncHandler(async (req, res) => {
+  const paging = Paging(req.page, req.limit);
+  let where = {
+    del: 0
+  }
+
+  if (req.username && req.username !== "") {
+    where.username = {
+      [Op.like]: `%${req.username}%`
+    }
+  }
+
+  if (req.email && req.email !== "") {
+    where.email = {
+      [Op.like]: `%${req.email}%`
+    }
+  }
+
+  const users = await User.findAll({
+    where: {
+      ...where
+    },
+    attributes: {
+      exclude: ['password', 'del', 'createdAt', 'updatedAt']
+    },
+    include: [
+      {
+        model: UserRole,
+        as: 'user_role',
+        required: false,
+        attributes: ['user_id', 'role_id'],
+        where: {
+          del: 0
+        },
+        include: [
+          {
+            model: Role,
+            as: 'role',
+            required: false,
+            attributes: ['id', 'name', 'slug'],
+            where: {
+              del: 0
+            }
+          }
+        ]
+      }
+    ],
+    ...paging,
+    order: [['createdAt', 'desc']],
+  });
+
+  const total = await User.count({
+    where: {
+      ...where
+    }
+  })
+
+  return {
+    rows: users,
+    total: total
+  }
+})
+
+const updateUser = async (data) => {
+  if (data.id) {
+    const check = await User.findOne({
+      where: {
+        id: data.id,
+        del: 0
+      }
+    })
+
+    if (!check) {
+      throw new Error("User not found!")
+    }
+
+    const checkEmail = await User.findOne({
+      where: {
+        id: {
+          [Op.notLike]: data.id
+        },
+        email: {
+          [Op.like]: `%${data.email}%`
+        },
+        del: 0
+      }
+    })
+
+    if (checkEmail) {
+      throw new Error('Email already exists')
+    }
+
+    if (data.password && data.password != '') {
+      data.password = hashPassWord(data.password)
+    }
+
+    const update = await check.update({ ...data })
+
+    const check_role = await UserRole.findOne({
+      where: {
+        user_id: check.id
+      }
+    })
+
+    if (!check_role) {
+      await UserRole.create({
+        user_id: check.id,
+        role_id: data.role_id,
+        del: 0
+      })
+    } else {
+      await check_role.update({
+        user_id: check.id,
+        role_id: data.role_id
+      })
+    }
+    return update
+  } else {
+    const accExist = await User.findOne({
+      where: {
+        email: {
+          [Op.like]: `%${data.email}%`
+        },
+        del: 0
+      }
+    })
+
+    if (accExist) {
+      throw new Error("Email already exists")
+    }
+
+    await UserRole.create({
+      user_id: create.id,
+      role_id: data.role_id,
+      del: 0
+    })
+
+    const create = await User.create({
+      ...data,
+      password: hashPassWord(data.password),
+      del: 0
+    })
+
+    return create
+  }
+}
+
+
+module.exports = {
+  register,
+  login,
+  getProfile,
+  updateProfile,
+  changePassword,
+  getListUser,
+  updateUser
+};

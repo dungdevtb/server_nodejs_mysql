@@ -21,10 +21,20 @@ const changePassword = async (req, res) => {
   return userServices.changePassword(data);
 }
 
+const getListUser = async (req, res) => {
+  return userServices.getListUser(req.query);
+}
+
+const updateUser = async (req, res) => {
+  return userServices.updateUser(req.body);
+}
+
 module.exports = {
   login,
   register,
   getProfile,
   updateProfile,
-  changePassword
+  changePassword,
+  getListUser,
+  updateUser
 };

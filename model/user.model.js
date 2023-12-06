@@ -5,9 +5,10 @@ const { DataTypes } = require("sequelize");
 class User extends BaseModel {
   static association() {
     const UserRole = require("./userRole.model");
-    this.hasMany(UserRole, {
+    this.hasOne(UserRole, {
       foreignKey: "user_id",
       as: "user_role",
+      targetKey: "id",
     });
 
     const RefreshToken = require("./refreshToken.model");
