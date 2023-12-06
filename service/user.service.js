@@ -301,15 +301,15 @@ const updateUser = async (data) => {
       throw new Error("Email already exists")
     }
 
-    await UserRole.create({
-      user_id: create.id,
-      role_id: data.role_id,
-      del: 0
-    })
-
     const create = await User.create({
       ...data,
       password: hashPassWord(data.password),
+      del: 0
+    })
+
+    await UserRole.create({
+      user_id: create.id,
+      role_id: data.role_id,
       del: 0
     })
 
