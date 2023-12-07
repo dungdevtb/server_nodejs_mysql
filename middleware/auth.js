@@ -144,7 +144,7 @@ const check_permission = (action) => {
         signal: 0,
         code: 401,
         errorCode: ERROR_MESSAGE.ERROR,
-        message: "Yêu cầu không hợp lệ"
+        message: "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại để tiếp tục."
       })
     }
   }

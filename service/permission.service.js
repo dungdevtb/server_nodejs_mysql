@@ -105,7 +105,25 @@ const deletePermission = async (id) => {
 }
 
 const getListPermissionByRoleId = async (role_id) => {
+    let res = Permission.findAll({
+        where: {
+            del: 0
+        },
+        attributes: {
+            exclude: ["createdAt", "updatedAt", "del"],
+        },
+        include: [{
+            model: RolePermission,
+            as: 'role_permission',
+            required: true,
+            where: {
+                role_id: role_id
+            },
+            attributes: { exclude: ['createdAt', 'updatedAt', 'del'] }
+        }]
+    })
 
+    return res
 }
 
 module.exports = {

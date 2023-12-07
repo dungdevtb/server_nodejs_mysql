@@ -6,6 +6,8 @@ const _CONF = require("../config/auth.config");
 const { checkPassword, hashPassWord, generateToken } = require("../middleware/auth");
 const { Paging } = require("../config/paging");
 const { Op } = require("sequelize");
+const { ERROR_MESSAGE } = require("../config/error");
+const { getListPermissionByRoleId } = require("./permission.service");
 require("dotenv").config();
 
 const register = asyncHandler(async (req, res) => {
@@ -56,8 +58,33 @@ const login = asyncHandler(async (req, res) => {
   const user = await User.findOne({
     where: {
       email: email,
+      del: 0
     },
+    attributes: {
+      exclude: ['del', 'createdAt', 'updatedAt']
+    },
+    include: [{
+      model: UserRole,
+      as: 'user_role',
+      required: false,
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'del']
+      },
+      include: [{
+        model: Role,
+        as: 'role',
+        required: false,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'del']
+        }
+      }]
+    }]
   });
+
+  if (!user) {
+    throw new Error(ERROR_MESSAGE.NOT_FOUND_ACCOUNT);
+  }
+
   ////compare password vs hashPassWord
   //so sánh pass ng dung nhập vs hashPass trong db
   if (user && (await bcrypt.compare(password, user.password))) {
@@ -89,9 +116,25 @@ const login = asyncHandler(async (req, res) => {
       { expiresIn: _CONF.refreshTokenLife }
     );
 
+    const check_role = await UserRole.findOne({
+      where: {
+        user_id: user.id
+      }
+    })
+
+
+    const list_permission = check_role ? await getListPermissionByRoleId(check_role.role_id) : [];
+
     return {
       token: accessToken,
-      refreshToken: refreshToken
+      refreshToken: refreshToken,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        user_role: user.user_role,
+      },
+      list_permission: list_permission
     };
   } else {
     return {
