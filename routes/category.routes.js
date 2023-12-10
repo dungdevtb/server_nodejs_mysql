@@ -13,7 +13,11 @@ svRouter.get(
   Response(CategoryController.getAllCategorys)
 );
 
-svRouter.get("/get_category/:id", check_permission(QUAN_LY_DANH_MUC), Response(CategoryController.getCategoryById));
+svRouter.get(
+  "/get_category/:id",
+  check_permission(QUAN_LY_DANH_MUC),
+  Response(CategoryController.getCategoryById)
+);
 
 svRouter.post(
   "/create_update_category",
