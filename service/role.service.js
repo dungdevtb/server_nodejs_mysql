@@ -5,7 +5,7 @@ const { Permission, Role, RolePermission } = require("../model");
 
 const getListRole = async (data) => {
     const paging = Paging(data.page, data.limit);
-    const where = { del: 0 };
+    let where = { del: 0 };
     if (data.name && data.name != '') {
         where = {
             ...where,
@@ -20,6 +20,10 @@ const getListRole = async (data) => {
             ...where
         },
         ...paging,
+        order: [['createdAt', 'desc']],
+        attributes: {
+            exclude: ["updatedAt", "del"],
+        },
         include: [
             {
                 model: RolePermission,
@@ -38,7 +42,6 @@ const getListRole = async (data) => {
                 ]
             }
         ],
-        order: [['createdAt', 'desc']],
     })
 
     const total = await Role.count({
@@ -83,7 +86,6 @@ const getRoleById = async (id) => {
 }
 
 const createUpdateRole = async (data) => {
-
     if (data.id) {
         const check = await Role.findOne({
             where: {
@@ -94,9 +96,9 @@ const createUpdateRole = async (data) => {
 
         const check_slug = await Role.findOne({
             where: {
-                // id: {
-                //     [Op.ne]: data.id
-                // },
+                id: {
+                    [Op.ne]: data.id
+                },
                 slug: data.slug,
                 del: 0
             }
@@ -106,7 +108,7 @@ const createUpdateRole = async (data) => {
             throw new Error(ERROR_MESSAGE.NOT_FOUND_ROLE)
         }
 
-        if (!check_slug) {
+        if (check_slug) {
             throw new Error(ERROR_MESSAGE.ROLE_EXISTS)
         }
         const update = await check.update({ ...data })

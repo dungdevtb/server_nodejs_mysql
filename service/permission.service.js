@@ -5,7 +5,7 @@ const { Permission, RolePermission } = require("../model");
 
 const getListPermissions = async (req) => {
     const paging = Paging(req.page, req.limit);
-    const where = { del: 0 };
+    let where = { del: 0 };
     if (req.name && req.name != '') {
         where = {
             ...where,
@@ -59,9 +59,9 @@ const createUpdatePermission = async (data) => {
         })
         const check_slug = await Permission.findOne({
             where: {
-                // id: {
-                //     [Op.ne]: data.id
-                // },
+                id: {
+                    [Op.ne]: data.id
+                },
                 slug: data.slug,
                 del: 0
             }
@@ -70,7 +70,7 @@ const createUpdatePermission = async (data) => {
         if (!check) {
             throw new Error(ERROR_MESSAGE.NOT_FOUND_PERMISSION)
         }
-        if (!check_slug) {
+        if (check_slug) {
             throw new Error(ERROR_MESSAGE.PERMISSION_EXISTS)
         }
 

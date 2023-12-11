@@ -34,9 +34,28 @@ const attributes = {
     type: DataTypes.STRING(255),
     allowNull: false,
   },
+  mobile: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    defaultValue: null,
+  },
+  address: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    defaultValue: null,
+  },
   password: {
     type: DataTypes.STRING(255),
     allowNull: false,
+  },
+  avatar: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  status: {
+    type: DataTypes.TINYINT(1),
+    allowNull: true,
+    default: 0,
   },
   del: {
     type: DataTypes.TINYINT(1),
