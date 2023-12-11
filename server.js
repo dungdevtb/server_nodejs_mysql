@@ -4,11 +4,11 @@ const cors = require("cors");
 const routes = require("./routes");
 require("dotenv").config();
 // const db = require("./model/dbconnect");
+const path = require("path");
 const pathFile = require("path");
 const fs = require("fs");
 const multer = require("multer");
 const { ERROR_MESSAGE } = require("./config/error");
-const { log } = require("console");
 
 const app = express();
 
@@ -30,11 +30,14 @@ app.get("/", (req, res) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//config static
+app.use(express.static(path.join(__dirname, './static')));
+
 const storage = multer.diskStorage({
   destination: pathFile.join(
     __dirname,
     process.env.DIST_DIR || "",
-    "./static/uploads/"
+    "static/uploads/"
   ),
   filename: (req, file, cb) => {
     let uploadedFileName;
@@ -42,7 +45,7 @@ const storage = multer.diskStorage({
       pathFile.join(
         __dirname,
         process.env.DIST_DIR || "",
-        `./static/uploads/${file.originalname.replace(/["'()\ ]/g, "")}`
+        `static/uploads/${file.originalname.replace(/["'()\ ]/g, "")}`
       ),
       (err) => {
         if (err === null) {
@@ -109,11 +112,13 @@ app.post("/api/upload/uploadImage", async (req, res) => {
       }
 
       const filePaths = {};
-      req.files.forEach((file) => {
-        filePaths[file.fieldname] = `${
-          process.env.API_SERVER
-        }/uploads/${file.filename.replace(/["'()\ ]/g, "")}`;
-      });
+      let file = req.files[0];
+
+      filePaths[file.fieldname] = `${process.env.API_SERVER}/uploads/${file.filename}`
+      // req.files.forEach((file) => {
+      //   filePaths[file.fieldname] = `${process.env.API_SERVER
+      //     }/uploads/${file.filename.replace(/["'()\ ]/g, "")}`;
+      // });
 
       return res.status(200).send({
         code: 200,

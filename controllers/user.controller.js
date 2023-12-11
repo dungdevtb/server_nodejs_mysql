@@ -9,7 +9,8 @@ const register = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  return userServices.getProfile(req, res);
+  const { userid } = req.userToken;
+  return userServices.getProfile(userid);
 };
 const updateProfile = async (req, res) => {
   const { data } = req.body
@@ -22,7 +23,7 @@ const changePassword = async (req, res) => {
 }
 
 const getListUser = async (req, res) => {
-  return userServices.getListUser(req.query);
+  return userServices.getListUser(req.query); f
 }
 
 const updateUser = async (req, res) => {

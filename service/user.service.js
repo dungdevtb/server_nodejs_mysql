@@ -94,11 +94,12 @@ const login = asyncHandler(async (req, res) => {
     const accessToken = jwt.sign(
       {
         //truyền vào payload
-        user: {
-          username: user.username,
-          email: user.email,
-          id: user.id,
-        },
+        userid: user.id
+        // user: {
+        //   username: user.username,
+        //   email: user.email,
+        //   id: user.id,
+        // },
       },
       _CONF.SECRET,
       { expiresIn: _CONF.tokenLife } //token sẽ hết hạn 
@@ -106,11 +107,12 @@ const login = asyncHandler(async (req, res) => {
     const refreshToken = jwt.sign(
       {
         //truyền vào payload
-        user: {
-          username: user.username,
-          email: user.email,
-          id: user.id,
-        },
+        userid: user.id
+        // user: {
+        //   username: user.username,
+        //   email: user.email,
+        //   id: user.id,
+        // },
       },
       _CONF.SECRET_REFRESH,
       { expiresIn: _CONF.refreshTokenLife }
@@ -122,7 +124,6 @@ const login = asyncHandler(async (req, res) => {
       }
     })
 
-
     const list_permission = check_role ? await getListPermissionByRoleId(check_role.role_id) : [];
 
     return {
@@ -132,7 +133,10 @@ const login = asyncHandler(async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        user_role: user.user_role,
+        mobile: user.mobile,
+        address: user.address,
+        status: user.status,
+        avatar: user.avatar,
       },
       list_permission: list_permission
     };
@@ -144,22 +148,39 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-const getProfile = asyncHandler(async (req, res) => {
-  const { id } = req.query
-  const user = await User.findOne({
+const getProfile = asyncHandler(async (userid) => {
+  const accExist = await User.findOne({
     where: {
-      id: id,
+      id: userid,
       del: 0
     },
   });
+
+  if (!accExist) {
+    throw new Error("Token invalid!");
+  }
+
+  const check_role = await UserRole.findOne({
+    where: {
+      user_id: accExist.id
+    }
+  })
+
+  const list_permission = check_role ? await getListPermissionByRoleId(check_role.role_id) : [];
+
   return {
     user: {
-      id: user.id,
-      username: user.username,
-      email: user.email
+      id: accExist.id,
+      username: accExist.username,
+      email: accExist.email,
+      mobile: accExist.mobile,
+      address: accExist.address,
+      status: accExist.status,
+      avatar: accExist.avatar,
     },
-    message: "Profile user",
-  };
+    list_permission: list_permission,
+    token: await generateToken({ userid: accExist.id })
+  }
 });
 
 

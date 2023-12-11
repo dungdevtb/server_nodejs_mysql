@@ -66,7 +66,7 @@ const check_permission = (action) => {
 
       const dataToken = await jwt.verify(token, _CONF.SECRET);
 
-      if (!dataToken.user) {
+      if (!dataToken.userid) {
         return res.send({
           signal: 0,
           code: 402,
@@ -77,11 +77,10 @@ const check_permission = (action) => {
 
       const userData = await User.findOne({
         where: {
-          id: dataToken.user.id,
+          id: dataToken.userid,
           del: 0
         }
       })
-
 
       if (!userData) {
         return res.send({
@@ -95,7 +94,7 @@ const check_permission = (action) => {
       req.userToken = dataToken;
       let check_role = await UserRole.findOne({
         where: {
-          user_id: dataToken.user.id,
+          user_id: dataToken.userid,
           del: 0
         }
       })
@@ -150,6 +149,60 @@ const check_permission = (action) => {
   }
 }
 
+const isAuthAdmin = async (req, res, next) => {
+  try {
+    let { token } = req.headers;
+    if (!token) {
+      token = req.query.token || req.body.token;
+    }
+
+    if (!token) {
+      return res.send({
+        signal: 0,
+        code: 401,
+        errorCode: ERROR_MESSAGE.NOT_FOUND_TOKEN,
+        message: 'Phiên đăng nhập đã hết hạn. Vui bạn đăng nhập lại để tiếp tục.'
+      })
+    }
+    const dataToken = await jwt.verify(token, _CONF.SECRET);
+    // console.log("dataToken ====> ", dataToken);
+    if (!dataToken.userid) {
+      return res.send({
+        signal: 0,
+        code: 402,
+        errorCode: ERROR_MESSAGE.NOT_FOUND_USER_INFO,
+        message: 'Không tìm thấy thông tin người dùng. Vui này đăng nhập lại để tiếp tục.'
+      })
+    }
+
+    const userData = await User.findOne({
+      where: {
+        id: dataToken.userid,
+        del: 0
+      }
+    })
+
+    if (!userData) {
+      return res.send({
+        signal: 0,
+        code: 403,
+        errorCode: ERROR_MESSAGE.NOT_FOUND_TOKEN,
+        message: 'Phiên đăng nhập không hết hạn. Vui bạn đăng nhập để tiếp tục.'
+      })
+    }
+
+    req.userToken = dataToken;
+    next()
+  } catch (error) {
+    console.log("IsAuthAdmin Error ====> ", error);
+    return res.send({
+      signal: 0,
+      code: 405,
+      errorCode: ERROR_MESSAGE.ERROR,
+      message: 'Phiên đăng nhập kết thúc. Vui lòng đăng nhập lại để tiếp tục.'
+    })
+  }
+}
 
 
 module.exports = {
@@ -157,5 +210,7 @@ module.exports = {
   hashPassWord,
   checkPassword,
   generateToken,
-  check_permission
+  check_permission,
+  isAuthAdmin
+
 };
