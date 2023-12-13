@@ -23,11 +23,20 @@ const changePassword = async (req, res) => {
 }
 
 const getListUser = async (req, res) => {
-  return userServices.getListUser(req.query); f
+  return userServices.getListUser(req.query);
 }
 
 const updateUser = async (req, res) => {
   return userServices.updateUser(req.body);
+}
+
+const deleteUser = async (req, res) => {
+  const { id } = req.query;
+  return userServices.deleteUser(id);
+};
+
+const exportListUser = async (req, res) => {
+  return userServices.exportListUser(req, res);
 }
 
 module.exports = {
@@ -37,5 +46,7 @@ module.exports = {
   updateProfile,
   changePassword,
   getListUser,
-  updateUser
+  updateUser,
+  deleteUser,
+  exportListUser
 };

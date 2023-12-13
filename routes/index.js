@@ -5,6 +5,7 @@ const User = require("./user.routes");
 const Crawl = require("./crawl.routes");
 const Permission = require("./permission.routes");
 const Role = require("./role.routes");
+const ExportExcel = require("./exportExcel.routes");
 
 const { Router } = require("express");
 const routerApp = new Router();
@@ -15,6 +16,7 @@ routerApp.use("", User);
 //manement permission
 routerApp.use("/api/permission", Permission);
 routerApp.use("/api/role", Role);
+routerApp.use("/api/exportExcel", ExportExcel);
 
 routerApp.use("/api/crawl", Crawl);
 routerApp.use("/api/tutorial", Tutorial);

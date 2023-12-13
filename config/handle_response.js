@@ -25,4 +25,19 @@ const Response = (handel) => {
   };
 };
 
-module.exports = { Response };
+const ResponseExportExcel = (handel) => {
+  return async (req, res, next) => {
+    try {
+      await handel(req, res, next);
+    } catch (err) {
+      return res.send({
+        signal: 0,
+        code: 400,
+        errorCode: 'ERR',
+        message: err.message
+      });
+    }
+  };
+}
+
+module.exports = { Response, ResponseExportExcel };

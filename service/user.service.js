@@ -7,6 +7,7 @@ const { checkPassword, hashPassWord, generateToken } = require("../middleware/au
 const { Paging } = require("../config/paging");
 const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
+const excelJS = require("exceljs")
 const { getListPermissionByRoleId } = require("./permission.service");
 require("dotenv").config();
 
@@ -36,10 +37,11 @@ const register = asyncHandler(async (req, res) => {
     username: username,
     email: email,
     password: hashPassword,
+    status: 1,
   });
 
   return {
-    message: "User created successfully!",
+    message: "Register successfully!",
     user: {
       id: user.id,
       username: user.username,
@@ -83,6 +85,10 @@ const login = asyncHandler(async (req, res) => {
 
   if (!user) {
     throw new Error(ERROR_MESSAGE.NOT_FOUND_ACCOUNT);
+  }
+
+  if (user.status === 0) {
+    throw new Error(ERROR_MESSAGE.NOT_ACTIVE_ACCOUNT);
   }
 
   ////compare password vs hashPassWord
@@ -240,9 +246,9 @@ const getListUser = asyncHandler(async (req, res) => {
     del: 0
   }
 
-  if (req.username && req.username !== "") {
+  if (req.name && req.name !== "") {
     where.username = {
-      [Op.like]: `%${req.username}%`
+      [Op.like]: `%${req.name}%`
     }
   }
 
@@ -368,6 +374,7 @@ const updateUser = async (data) => {
     const create = await User.create({
       ...data,
       password: hashPassWord(data.password),
+      status: 1,
       del: 0
     })
 
@@ -381,6 +388,181 @@ const updateUser = async (data) => {
   }
 }
 
+const deleteUser = async (id) => {
+  const check = await User.findOne({
+    where: {
+      id: id,
+      del: 0
+    }
+  })
+
+  if (!check) {
+    throw new Error(ERROR_MESSAGE.DATA_NOT_FOUND);
+  }
+
+  return check.update({ del: 1 });
+}
+
+
+const exportListUser = async (req, res) => {
+  try {
+    let where = {
+      del: 0
+    }
+
+    if (req.name && req.name !== "") {
+      where.username = {
+        [Op.like]: `%${req.name}%`
+      }
+    }
+
+    if (req.email && req.email !== "") {
+      where.email = {
+        [Op.like]: `%${req.email}%`
+      }
+    }
+
+    const users = await User.findAll({
+      where: {
+        ...where
+      },
+      attributes: {
+        exclude: ['password', 'del', 'createdAt', 'updatedAt']
+      },
+      include: [
+        {
+          model: UserRole,
+          as: 'user_role',
+          required: false,
+          attributes: ['user_id', 'role_id'],
+          where: {
+            del: 0
+          },
+          include: [
+            {
+              model: Role,
+              as: 'role',
+              required: false,
+              attributes: ['id', 'name', 'slug'],
+              where: {
+                del: 0
+              }
+            }
+          ]
+        }
+      ],
+      order: [['createdAt', 'desc']],
+    });
+
+    const workbook = new excelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Users');
+    const name_file = 'users'
+    // tạo một sheet nơi các đường lưới bị ẩn
+    // worksheet.views = [{
+    //   showGridLines: false
+    // }]
+
+    //thêm cột 
+    worksheet.columns = [
+      { header: 'STT', key: 'stt', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+      { header: 'Tên người dùng', key: 'username', width: 30, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+      { header: 'Vai trò', key: 'role', width: 30, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+      { header: 'Email', key: 'email', width: 30, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+      { header: 'Số điện thoại', key: 'mobile', width: 30, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+      { header: 'Địa chỉ', key: 'address', width: 30, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+      { header: 'Trạng thái', key: 'status', width: 20, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+    ];
+
+    // đọc dữ liệu
+    let length = 1
+    users.map((user, index) => {
+      worksheet.addRow({
+        stt: index + 1,
+        username: user.username ? user.username : '',
+        role: user.user_role ? user.user_role.role.name : '',
+        email: user.email ? user.email : '',
+        mobile: user.mobile ? user.mobile.replace(user.mobile.charAt(0), "+84") : '',
+        address: user.address ? user.address : '',
+        status: user.status == 1 ? "Hoạt động" : "Không hoạt động",
+      });
+      length += 1
+    })
+
+    worksheet.insertRow(1, {})
+    worksheet.insertRow(1, {})
+    worksheet.insertRow(1, {})
+    worksheet.insertRow(1, {})
+    worksheet.mergeCells(1, 1, 1, worksheet.columns.length)
+    worksheet.mergeCells(2, 1, 2, worksheet.columns.length)
+    worksheet.mergeCells(3, 1, 3, worksheet.columns.length)
+    worksheet.mergeCells(4, 1, 4, worksheet.columns.length)
+
+    //designn header file
+    worksheet.getCell('A1').value = 'DỰ ÁN QUẢN LÝ BÁN HÀNG - LẠI THẾ DŨNG'
+    worksheet.getCell('A1').font = {
+      size: 14,
+      bold: true,
+      color: { argb: 'FF0000' }
+    }
+    worksheet.getCell('A1').alignment = { horizontal: 'left', vertical: 'middle' };
+
+    worksheet.getCell('A2').value = 'BẢNG QUẢN LÝ NGƯỜI DÙNG';
+    worksheet.getCell('A2').font = {
+      size: 18,
+      bold: true,
+    };
+    worksheet.getCell('A2').alignment = { horizontal: 'center', vertical: 'middle' };
+
+    worksheet.getCell('A3').value = 'Từ trước đến nay';
+    worksheet.getCell('A3').font = {
+      size: 11,
+      bold: true,
+      color: { argb: 'FF0000' },
+    };
+    worksheet.getCell('A3').alignment = { horizontal: 'center', vertical: 'middle' };
+
+    worksheet.getRow(5).eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      cell.border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } }
+      }
+    });
+
+    users.map((user, index) => {
+      worksheet.getRow(6 + index).eachCell((cell) => {
+        cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+        cell.border = {
+          top: { style: 'thin', color: { argb: '00000000' } },
+          left: { style: 'thin', color: { argb: '00000000' } },
+          bottom: { style: 'thin', color: { argb: '00000000' } },
+          right: { style: 'thin', color: { argb: '00000000' } }
+        }
+      });
+    })
+
+    const rows = worksheet.getRows(5, length);
+    rows.map((row, i) => {
+      worksheet.getRow(5 + i).height = 20
+    })
+
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    res.setHeader('Content-Disposition', `attachment; filename=${name_file}.xlsx`);
+
+    return workbook.xlsx.write(res).then(() => {
+      res.status(200)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+
+}
 
 module.exports = {
   register,
@@ -389,5 +571,7 @@ module.exports = {
   updateProfile,
   changePassword,
   getListUser,
-  updateUser
+  updateUser,
+  deleteUser,
+  exportListUser
 };

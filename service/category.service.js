@@ -81,6 +81,7 @@ const deleteCategory = async (id) => {
   const record = await Category.findOne({
     where: {
       id: id,
+      del: 0
     },
   });
 

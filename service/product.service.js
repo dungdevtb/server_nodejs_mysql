@@ -97,6 +97,7 @@ const deleteProduct = async (id) => {
   const record = await Product.findOne({
     where: {
       id: id,
+      del: 0,
     },
   });
 
