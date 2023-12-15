@@ -19,7 +19,8 @@ const ERROR_MESSAGE = {
   REGISTER_INVALID_MOBILE: "Số điện thoại đăng ký không hợp lệ",
   REGISTER_EXIST_EMAIL: "Email đăng ký không hợp lệ",
   DATA_NOT_FOUND: "Không tìm thấy dữ liệu",
-  NOT_ACTIVE_ACCOUNT: "Tài khoản chưa hoạt động!"
+  NOT_ACTIVE_ACCOUNT: "Tài khoản chưa hoạt động!",
+  ERROR_PAYMENT: "Có lỗi xảy ra khi thanh toán!",
 };
 
 module.exports = {

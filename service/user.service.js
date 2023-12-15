@@ -556,12 +556,11 @@ const exportListUser = async (req, res) => {
     res.setHeader('Content-Disposition', `attachment; filename=${name_file}.xlsx`);
 
     return workbook.xlsx.write(res).then(() => {
-      res.status(200)
-    })
+      res.status(200);
+    });
   } catch (error) {
     console.log(error)
   }
-
 }
 
 module.exports = {

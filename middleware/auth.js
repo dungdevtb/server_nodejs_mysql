@@ -149,6 +149,35 @@ const check_permission = (action) => {
   }
 }
 
+const isAuth = async (req, res, next) => {
+  try {
+    const { token } = req.headers;
+    if (!token) {
+      token = req.query.token || req.body.token;
+    }
+
+    if (!token) {
+      return res.send({
+        signal: 0,
+        code: 401,
+        errorCode: ERROR_MESSAGE.NOT_FOUND_TOKEN,
+        message: 'Phiên đăng nhập kết thúc. Vui lòng đăng nhập lại để tiếp tục.'
+      });
+    }
+
+    // const dataToken 
+
+
+  } catch (err) {
+    return res.send({
+      signal: 0,
+      code: 405,
+      errorCode: ERROR_MESSAGE.ERROR,
+      message: "Phiên đăng nhap không hợp lệ. Vui long đăng nhap lại để tiếp tục."
+    })
+  }
+}
+
 const isAuthAdmin = async (req, res, next) => {
   try {
     let { token } = req.headers;
