@@ -2,7 +2,7 @@ const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
 const { Paging } = require("../config/paging");
 
-const { Product, Category } = require("../model");
+const { Product, Category, Brand } = require("../model");
 
 const getAllProducts = async (data) => {
   let where = { del: 0 };
@@ -37,13 +37,23 @@ const getAllProducts = async (data) => {
     ...paging,
     order: [["createdAt", "desc"]],
     attributes: {
-      exclude: ["createdAt", "updatedAt", "del", "category_id"],
+      exclude: ["createdAt", "updatedAt", "del", "category_id", "Brand_id", 'brand_id'],
     },
     include: [
       {
         model: Category,
         as: "category",
         attributes: ["id", "name"],
+        required: false,
+        where: {
+          del: 0,
+        },
+      },
+      {
+        model: Brand,
+        as: "brand",
+        attributes: ["id", "name"],
+        required: false,
         where: {
           del: 0,
         },

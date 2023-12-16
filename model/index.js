@@ -8,6 +8,7 @@ const RefreshToken = require("./refreshToken.model");
 const Crawl = require("./crawl.model");
 const Permission = require("./permission.model");
 const RolePermission = require("./rolePermission.model");
+const Brand = require("./brand.model")
 
 // Tutorial.sync(); //create table
 // Product.sync();
@@ -39,4 +40,5 @@ module.exports = {
   Crawl,
   Permission,
   RolePermission,
+  Brand
 };
