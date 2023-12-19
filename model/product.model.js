@@ -16,6 +16,11 @@ class Product extends BaseModel {
       as: "brand",
     });
 
+    const Size = require("./size.model");
+    this.hasMany(Size, {
+      foreignKey: "product_id",
+      as: "sizes",
+    })
   }
 }
 

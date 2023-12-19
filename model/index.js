@@ -9,6 +9,9 @@ const Crawl = require("./crawl.model");
 const Permission = require("./permission.model");
 const RolePermission = require("./rolePermission.model");
 const Brand = require("./brand.model")
+const Size = require("./size.model")
+const SizeColor = require("./sizeColor.model")
+const Color = require("./color.model")
 
 // Tutorial.sync(); //create table
 // Product.sync();
@@ -40,5 +43,8 @@ module.exports = {
   Crawl,
   Permission,
   RolePermission,
-  Brand
+  Brand,
+  Size,
+  SizeColor,
+  Color
 };

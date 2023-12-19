@@ -2,7 +2,7 @@ const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
 const { Paging } = require("../config/paging");
 
-const { Product, Category, Brand } = require("../model");
+const { Product, Category, Brand, Size, SizeColor, Color } = require("../model");
 
 const getAllProducts = async (data) => {
   let where = { del: 0 };
@@ -37,7 +37,7 @@ const getAllProducts = async (data) => {
     ...paging,
     order: [["createdAt", "desc"]],
     attributes: {
-      exclude: ["createdAt", "updatedAt", "del", "category_id", "Brand_id", 'brand_id'],
+      exclude: ["updatedAt", "del", "category_id", "Brand_id", 'brand_id'],
     },
     include: [
       {
@@ -58,6 +58,43 @@ const getAllProducts = async (data) => {
           del: 0,
         },
       },
+      {
+        model: Size,
+        as: "sizes",
+        // attributes: ["id", "name"],
+        required: false,
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "del"],
+        },
+        where: {
+          del: 0,
+        },
+        include: [
+          {
+            model: SizeColor,
+            as: "size_color",
+            attributes: ["id"],
+            required: false,
+            where: {
+              del: 0,
+            },
+            include: [
+              {
+                model: Color,
+                as: "color",
+                // attributes: ["id", "name"],
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "del"],
+                },
+                required: false,
+                where: {
+                  del: 0,
+                },
+              },
+            ],
+          }
+        ]
+      }
     ],
   });
 
@@ -99,7 +136,16 @@ const createUpdateProduct = async (data) => {
 
     return record.update({ ...data });
   } else {
-    return Product.create({ ...data, del: 0 });
+
+    console.log('createUpdateProduct', data);
+    // return Product.create(
+    //   {
+    //     ...data,
+    //     color: Product.setArr(data.color),
+    //     size_quantity: Product.setArr(data.size_quantity),
+    //     del: 0
+    //   }
+    // );
   }
 };
 
