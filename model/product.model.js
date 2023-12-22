@@ -21,6 +21,12 @@ class Product extends BaseModel {
       foreignKey: "product_id",
       as: "sizes",
     })
+
+    const Color = require("./color.model");
+    this.hasMany(Color, {
+      foreignKey: "product_id",
+      as: "colors",
+    })
   }
 }
 
@@ -55,26 +61,26 @@ const attributes = {
     type: DataTypes.INTEGER(10),
     allowNull: true,
   },
-  color: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-    get: function () {
-      return Product.parseArr(this.getDataValue('color'));
-    },
-    set: function (val) {
-      this.setDataValue('color', Product.setArr(val));
-    }
-  },
-  size_quantity: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-    get: function () {
-      return Product.parseArr(this.getDataValue('size_quantity'));
-    },
-    set: function (val) {
-      this.setDataValue('size_quantity', Product.setArr(val));
-    }
-  },
+  // color: {
+  //   type: DataTypes.TEXT,
+  //   allowNull: true,
+  //   get: function () {
+  //     return Product.parseArr(this.getDataValue('color'));
+  //   },
+  //   set: function (val) {
+  //     this.setDataValue('color', Product.setArr(val));
+  //   }
+  // },
+  // size_quantity: {
+  //   type: DataTypes.TEXT,
+  //   allowNull: true,
+  //   get: function () {
+  //     return Product.parseArr(this.getDataValue('size_quantity'));
+  //   },
+  //   set: function (val) {
+  //     this.setDataValue('size_quantity', Product.setArr(val));
+  //   }
+  // },
   category_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
@@ -86,6 +92,11 @@ const attributes = {
   status: {
     type: DataTypes.TINYINT(1),
     allowNull: true,
+  },
+  display_order: {
+    type: DataTypes.INTEGER(10).UNSIGNED,
+    allowNull: false,
+    defaultValue: 1
   },
   del: {
     type: DataTypes.TINYINT(1),

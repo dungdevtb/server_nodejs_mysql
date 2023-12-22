@@ -10,6 +10,12 @@ class Color extends BaseModel {
             sourceKey: "id",
             as: "size_color",
         });
+
+        const Product = require("./product.model");
+        this.belongsTo(Product, {
+            foreignKey: "product_id",
+            as: "product",
+        });
     }
 }
 
@@ -29,6 +35,10 @@ const attributes = {
         allowNull: true,
     },
     quantity: {
+        type: DataTypes.INTEGER(10).UNSIGNED,
+        allowNull: true,
+    },
+    product_id: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: true,
     },

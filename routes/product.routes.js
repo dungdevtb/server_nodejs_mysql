@@ -7,13 +7,14 @@ const { QUAN_LY_SAN_PHAM } = require("../middleware/actionDefault");
 
 const svRouter = new Router();
 
-svRouter.get("/get_all_products", check_permission(QUAN_LY_SAN_PHAM), Response(ProductController.getAllProducts));
+// svRouter.get("/get_all_products", check_permission(QUAN_LY_SAN_PHAM), Response(ProductController.getAllProducts));
+svRouter.get("/get_all_products", Response(ProductController.getAllProducts));
 
 svRouter.get("/get_product/:id", check_permission(QUAN_LY_SAN_PHAM), Response(ProductController.getProductById));
 
 svRouter.post(
   "/create_update_product",
-  check_permission(QUAN_LY_SAN_PHAM),
+  // check_permission(QUAN_LY_SAN_PHAM),
   Response(ProductController.createUpdateProduct)
 );
 
