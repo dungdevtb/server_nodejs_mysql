@@ -21,6 +21,7 @@ const ERROR_MESSAGE = {
   DATA_NOT_FOUND: "Không tìm thấy dữ liệu",
   NOT_ACTIVE_ACCOUNT: "Tài khoản chưa hoạt động!",
   ERROR_PAYMENT: "Có lỗi xảy ra khi thanh toán!",
+  VOUCHER_EXIST: 'Mã voucher đã tồn tại. Vui lòng nhập mã khác!'
 };
 
 module.exports = {

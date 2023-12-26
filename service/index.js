@@ -6,6 +6,7 @@ const crawlServices = require("./crawl.service.js");
 const permissionServices = require("./permission.service.js");
 const roleServices = require("./role.service.js");
 const transactionServices = require("./transaction.service.js");
+const voucherServices = require("./voucher.service.js");
 
 module.exports = {
   tutorialServices,
@@ -15,5 +16,6 @@ module.exports = {
   crawlServices,
   permissionServices,
   roleServices,
-  transactionServices
+  transactionServices,
+  voucherServices,
 };

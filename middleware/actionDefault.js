@@ -13,6 +13,7 @@ const QUAN_LY_DU_AN = 'quan-ly-du-an'
 const QUAN_LY_HINH_ANH = 'quan-ly-hinh-anh'
 const QUAN_LY_SAN_PHAM = 'quan-ly-san-pham'
 const QUAN_LY_DANH_MUC = 'quan-ly-danh-muc'
+const QUAN_LY_KHUYEN_MAI = 'quan-ly-khuyen-mai'
 
 module.exports = {
     QUAN_LY_ADMIN,
@@ -27,5 +28,6 @@ module.exports = {
     QUAN_LY_DU_AN,
     QUAN_LY_HINH_ANH,
     QUAN_LY_SAN_PHAM,
-    QUAN_LY_DANH_MUC
+    QUAN_LY_DANH_MUC,
+    QUAN_LY_KHUYEN_MAI
 }

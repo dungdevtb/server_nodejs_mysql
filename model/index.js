@@ -12,6 +12,12 @@ const Brand = require("./brand.model")
 const Size = require("./size.model")
 const SizeColor = require("./sizeColor.model")
 const Color = require("./color.model")
+const Customer = require("./customer.model")
+const Order = require("./order.model")
+const OrderProduct = require("./orderProduct.model")
+const Voucher = require("./voucher.model")
+const VoucherProduct = require("./voucherProduct.model")
+
 
 // Tutorial.sync(); //create table
 // Product.sync();
@@ -46,5 +52,10 @@ module.exports = {
   Brand,
   Size,
   SizeColor,
-  Color
+  Color,
+  Customer,
+  Order,
+  OrderProduct,
+  Voucher,
+  VoucherProduct
 };

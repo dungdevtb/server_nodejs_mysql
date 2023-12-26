@@ -27,6 +27,13 @@ class Product extends BaseModel {
       foreignKey: "product_id",
       as: "colors",
     })
+
+    const OrderProduct = require("./orderProduct.model");
+    this.hasMany(OrderProduct, {
+      foreignKey: 'product_id',
+      sourceKey: 'id'
+    });
+
   }
 }
 

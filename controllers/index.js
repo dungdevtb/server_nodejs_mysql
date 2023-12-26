@@ -6,6 +6,7 @@ const CrawlController = require("./crawl.controller");
 const PermissionController = require("./permission.controller");
 const RoleController = require("./role.controller");
 const PaymentController = require("./payment.controller");
+const VoucherController = require("./voucher.controller");
 
 module.exports = {
   TutorialController,
@@ -15,5 +16,6 @@ module.exports = {
   CrawlController,
   PermissionController,
   RoleController,
-  PaymentController
+  PaymentController,
+  VoucherController,
 };
