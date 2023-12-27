@@ -12,9 +12,7 @@ const getProductById = async (req, res) => {
 
 const createUpdateProduct = async (req, res) => {
   const data = req.body;
-
-  console.log(data);
-  // return productServices.createUpdateProduct(data);
+  return productServices.createUpdateProduct(data);
 };
 
 const deleteProduct = async (req, res) => {

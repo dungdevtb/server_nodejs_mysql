@@ -19,7 +19,8 @@ class Voucher extends BaseModel {
         const VoucherProduct = require('./voucherProduct.model');
         this.hasMany(VoucherProduct, {
             foreignKey: 'voucher_id',
-            sourceKey: 'id', as: 'voucher_product'
+            sourceKey: 'id',
+            as: 'voucher_product'
         });
     }
 }

@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
 const { Paging } = require("../config/paging");
-const { Voucher, VoucherProduct } = require("../model");
+const { Voucher, VoucherProduct, Product } = require("../model");
 const moment = require("moment");
 
 const getListVouchers = async (req) => {
@@ -53,8 +53,28 @@ const getListVouchers = async (req) => {
         ...paging,
         order: [['createdAt', 'desc']],
         attributes: {
-            exclude: ["createdAt", "updatedAt", "del"],
+            exclude: ["updatedAt", "del"],
         },
+        include: [
+            {
+                model: VoucherProduct,
+                as: 'voucher_product',
+                required: false,
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'del']
+                },
+                include: [
+                    {
+                        model: Product,
+                        as: 'product',
+                        required: false,
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt', 'del']
+                        }
+                    }
+                ]
+            }
+        ]
     });
 
     const total = await Voucher.count({
@@ -107,7 +127,7 @@ const createUpdateVoucher = async (data) => {
             throw ERROR_MESSAGE.VOUCHER_EXIST
         }
 
-        if (type_voucher == 1) {
+        if (data.type_voucher == 2) {
             //for product
             await VoucherProduct.destroy({
                 where: {
@@ -118,7 +138,7 @@ const createUpdateVoucher = async (data) => {
             await VoucherProduct.bulkCreate(data.products.map(product => {
                 return {
                     voucher_id: data.id,
-                    product_id: product
+                    product_id: product.id
                 }
             }))
         }
@@ -139,7 +159,7 @@ const createUpdateVoucher = async (data) => {
             throw ERROR_MESSAGE.VOUCHER_EXIST
         }
 
-        if (type_voucher == 0) {
+        if (data.type_voucher == 1) {
             //for order
             const voucher = await Voucher.create({
                 ...data,
@@ -149,7 +169,7 @@ const createUpdateVoucher = async (data) => {
             return voucher
         }
 
-        if (type_voucher == 1) {
+        if (data.type_voucher == 2) {
             //for product
             const voucher = await Voucher.create({
                 ...data,
@@ -159,7 +179,7 @@ const createUpdateVoucher = async (data) => {
             await VoucherProduct.bulkCreate(data.products.map(product => {
                 return {
                     voucher_id: voucher.id,
-                    product_id: product
+                    product_id: product.id
                 }
             }))
 
