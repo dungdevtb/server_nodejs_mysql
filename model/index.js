@@ -17,6 +17,10 @@ const Order = require("./order.model")
 const OrderProduct = require("./orderProduct.model")
 const Voucher = require("./voucher.model")
 const VoucherProduct = require("./voucherProduct.model")
+const Post = require("./post.model");
+const PostCategory = require("./postCategory.model");
+const PostTag = require("./postTag.model");
+const PostHookTag = require("./postHookTag.model");
 
 
 // Tutorial.sync(); //create table
@@ -57,5 +61,9 @@ module.exports = {
   Order,
   OrderProduct,
   Voucher,
-  VoucherProduct
+  VoucherProduct,
+  Post,
+  PostCategory,
+  PostTag,
+  PostHookTag
 };
