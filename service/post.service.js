@@ -135,7 +135,18 @@ const createUpdatePost = async (data) => {
 }
 
 const getDetailPost = async (data) => {
+    const check = await Post.findOne({
+        where: {
+            id: data.id,
+            del: 0
+        }
+    })
 
+    if (!check) {
+        throw new Error(ERROR_MESSAGE.DATA_NOT_FOUND)
+    }
+
+    return check
 }
 
 const deletePost = async (data) => {
@@ -150,7 +161,8 @@ const deletePost = async (data) => {
         throw new Error(ERROR_MESSAGE.DATA_NOT_FOUND)
     }
 
-    return check.update({ del: 1 }, { where: { group_id: data.id } })
+    // return check.update({ del: 1 }, { where: { group_id: data.id } })
+    return check.update({ del: 1 })
 }
 
 //PostCategory
@@ -420,6 +432,44 @@ const deletePostTag = async (id) => {
     return check.update({ del: 1 })
 }
 
+//***********post webbb******** */
+const getListPostWeb = async (data) => {
+    const { title } = data
+    let where = { del: 0 }
+    if (title) {
+        where = {
+            ...where,
+            title: {
+                [Op.like]: `%${title}%`
+            }
+        }
+    }
+
+    const res = await Post.findAll({
+        where: {
+            ...where
+        },
+        order: [['display_order', 'asc']],
+        attributes: {
+            exclude: ['del', 'createdAt', 'updatedAt']
+        }
+    })
+
+    return res
+}
+
+const getPostHot = async () => {
+    const res = await Post.findAll({
+        where: {
+            hot: 1,
+            del: 0
+        },
+        limit: 5,
+        order: [['createdAt', 'desc']],
+    })
+    return res
+}
+
 module.exports = {
     getListPost,
     createUpdatePost,
@@ -430,6 +480,8 @@ module.exports = {
     deletePostCategory,
     getListPostTag,
     createUpdatePostTag,
-    deletePostTag
+    deletePostTag,
+    getListPostWeb,
+    getPostHot
 }
 

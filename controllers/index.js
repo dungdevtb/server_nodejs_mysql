@@ -8,6 +8,7 @@ const RoleController = require("./role.controller");
 const PaymentController = require("./payment.controller");
 const VoucherController = require("./voucher.controller");
 const PostController = require("./post.controller");
+const CustomerController = require("./customer.controller");
 
 module.exports = {
   TutorialController,
@@ -19,5 +20,6 @@ module.exports = {
   RoleController,
   PaymentController,
   VoucherController,
-  PostController
+  PostController,
+  CustomerController,
 };

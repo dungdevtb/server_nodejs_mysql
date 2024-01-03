@@ -23,6 +23,11 @@ svRouter.post('/delete-post/:id',
     check_permission(QUAN_LY_NOI_DUNG),
     Response(PostController.deletePost));
 
+//webb
+svRouter.get("/get-list-post-web", Response(PostController.getListPostWeb))
+
+svRouter.get("/get-post-hot", Response(PostController.getPostHot))
+
 //Post Category
 svRouter.get("/get-list-post-category",
     check_permission(QUAN_LY_NOI_DUNG),

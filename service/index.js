@@ -8,6 +8,7 @@ const roleServices = require("./role.service.js");
 const transactionServices = require("./transaction.service.js");
 const voucherServices = require("./voucher.service.js");
 const postServices = require("./post.service.js");
+const customerServices = require("./customer.service.js");
 
 module.exports = {
   tutorialServices,
@@ -19,5 +20,6 @@ module.exports = {
   roleServices,
   transactionServices,
   voucherServices,
-  postServices
+  postServices,
+  customerServices,
 };

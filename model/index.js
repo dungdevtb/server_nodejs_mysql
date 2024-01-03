@@ -22,7 +22,6 @@ const PostCategory = require("./postCategory.model");
 const PostTag = require("./postTag.model");
 const PostHookTag = require("./postHookTag.model");
 
-
 // Tutorial.sync(); //create table
 // Product.sync();
 // Category.sync();

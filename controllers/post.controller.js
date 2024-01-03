@@ -47,6 +47,15 @@ const deletePostTag = async (req, res) => {
     return postServices.deletePostTag(id);
 }
 
+//***********post webbb******** */
+const getListPostWeb = async (req, res) => {
+    return postServices.getListPostWeb(req.query);
+}
+
+const getPostHot = async (req, res) => {
+    return postServices.getPostHot();
+}
+
 module.exports = {
     getListPost,
     createUpdatePost,
@@ -57,5 +66,7 @@ module.exports = {
     deletePostCategory,
     getListPostTag,
     createUpdatePostTag,
-    deletePostTag
+    deletePostTag,
+    getListPostWeb,
+    getPostHot
 }

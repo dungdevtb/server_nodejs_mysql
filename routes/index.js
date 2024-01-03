@@ -9,6 +9,7 @@ const ExportExcel = require("./exportExcel.routes");
 const Payment = require("./payment.routes");
 const Voucher = require("./voucher.routes");
 const Post = require("./post.routes");
+const Customer = require("./customer.routes");
 
 const { Router } = require("express");
 const routerApp = new Router();
@@ -28,5 +29,7 @@ routerApp.use("/api/product", Product);
 routerApp.use("", Category);
 routerApp.use("/api/voucher", Voucher);
 routerApp.use("/api/post", Post);
+
+routerApp.use("/api/customer", Customer);
 
 module.exports = routerApp;
