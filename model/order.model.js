@@ -13,7 +13,8 @@ class Order extends BaseModel {
     const OrderProduct = require("./orderProduct.model");
     this.hasMany(OrderProduct, {
       foreignKey: 'order_id',
-      sourceKey: 'id'
+      sourceKey: 'id',
+      as: 'order_product'
     });
 
     const Voucher = require("./voucher.model");
@@ -58,7 +59,8 @@ const attributes = {
     defaultValue: null
   },
   fee_delivery: {
-    type: DataTypes.FLOAT(7, 6),
+    // type: DataTypes.FLOAT(7, 6),
+    type: DataTypes.INTEGER(10),
     allowNull: true,
     defaultValue: null,
     comment: 'fee_delivery : fee delivery'
@@ -72,7 +74,24 @@ const attributes = {
     type: DataTypes.TINYINT(1),
     allowNull: false,
     defaultValue: 0,
-    comment: '-1: Tạo đơn hàng,  0: Đang chờ xử lý(Chờ chủ Shop duyệt đơn hàng), 1: Đang giao hàng, 2: Đã giao hàng, 3: Đã hủy, 5: Thành công'
+    comment: '0: Tạo đơn hàng,  1: Đang chờ xử lý(Chờ chủ Shop duyệt đơn hàng), 2: Đang giao hàng, 3: Đã giao hàng, 4: Đã hủy, 5: Thành công'
+  },
+  total: {
+    // type: DataTypes.DECIMAL(20, 6),
+    type: DataTypes.INTEGER(10),
+    allowNull: false,
+    defaultValue: 0,
+  },
+  metadata: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    defaultValue: '{}',
+    get: function () {
+      return Order.parseObject(this.getDataValue('metadata'));
+    },
+    set: function (val) {
+      this.setDataValue('metadata', Order.setObject(val));
+    }
   },
   del: {
     type: DataTypes.TINYINT(1),

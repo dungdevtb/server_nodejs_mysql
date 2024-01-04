@@ -3,16 +3,16 @@ const randomTransactionId = (strType = '', l = 8) => {
 }
 
 const randomOTP = (l = 6) => {
-    const chars = '0123456789'
-    const charsLength = chars.length
-    let string = ''
+    const chars = '0123456789';
+    const charsLength = chars.length;
+    let string = '';
 
-    for (let i = 0; i < l; i++) {
-        string += chars.charAt[Math.floor(Math.random() * charsLength)]
-    }
+    for (let i = 0; i < l; i++)
+        string += chars.charAt(Math.floor(Math.random() * charsLength));
 
-    return string
+    return string;
 }
+
 
 module.exports = {
     randomTransactionId

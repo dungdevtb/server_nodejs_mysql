@@ -9,6 +9,7 @@ const PaymentController = require("./payment.controller");
 const VoucherController = require("./voucher.controller");
 const PostController = require("./post.controller");
 const CustomerController = require("./customer.controller");
+const OrderController = require("./order.controller");
 
 module.exports = {
   TutorialController,
@@ -22,4 +23,5 @@ module.exports = {
   VoucherController,
   PostController,
   CustomerController,
+  OrderController,
 };
