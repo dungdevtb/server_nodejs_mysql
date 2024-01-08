@@ -43,7 +43,7 @@ const attributes = {
     defaultValue: 0
   },
   payment_type: {//loại thanh toán: thanh toán khi giao hàng, thanh toán online
-    type: DataTypes.STRING(255),
+    type: DataTypes.TINYINT(1),
     allowNull: true,
     defaultValue: null,
     comment: 'payment_type : cash, online'
@@ -74,10 +74,10 @@ const attributes = {
     type: DataTypes.TINYINT(1),
     allowNull: false,
     defaultValue: 0,
-    comment: '0: Tạo đơn hàng,  1: Đang chờ xử lý(Chờ chủ Shop duyệt đơn hàng), 2: Đang giao hàng, 3: Đã giao hàng, 4: Đã hủy, 5: Thành công'
+    comment: '0: Tạo đơn hàng,  1: Đang chờ xác nhận(Chờ chủ Shop duyệt đơn hàng), 2: Đang giao hàng, 3: Đã hủy, 4: Thành công'
   },
   total: {
-    // type: DataTypes.DECIMAL(20, 6),
+    // type: DataTypes.DECIMAL(20, 6),o
     type: DataTypes.INTEGER(10),
     allowNull: false,
     defaultValue: 0,

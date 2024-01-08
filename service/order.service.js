@@ -174,6 +174,75 @@ const getListOrder = async (req) => {
     }
 }
 
+const getDetailOrder = async (req) => {
+    const data = await Order.findOne({
+        where: {
+            id: req.id,
+            del: 0
+        },
+        include: [
+            {
+                model: Customer,
+                attributes: ['id', 'username', 'email', 'mobile', 'address'],
+                required: false,
+                as: 'customer',
+            },
+            {
+                model: OrderProduct,
+                attributes: {
+                    exclude: ["createdAt", "updatedAt", "del"],
+                },
+                as: 'order_product',
+                required: false,
+                include: [
+                    {
+                        model: Product,
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt", "del"],
+                        },
+                        required: false,
+                        as: 'product'
+                    }
+                ]
+            },
+            {
+                model: Voucher,
+                attributes: {
+                    exclude: ["createdAt", "updatedAt", "del"],
+                },
+                required: false,
+                as: 'voucher',
+                include: [
+                    {
+                        model: VoucherProduct,
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt", "del"],
+                        },
+                        required: false,
+                        as: 'voucher_product',
+                        include: [
+                            {
+                                model: Product,
+                                attributes: {
+                                    exclude: ["createdAt", "updatedAt", "del"],
+                                },
+                                required: false,
+                                as: 'product'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        attributes: {
+            exclude: ["updatedAt", "del"],
+        },
+        order: [['createdAt', 'desc']]
+    })
+
+    return data
+}
+
 const updateStatusOrder = async (req) => {
 
 }
@@ -231,6 +300,7 @@ const exportListOrder = async (req) => {
 
 module.exports = {
     getListOrder,
+    getDetailOrder,
     updateStatusOrder,
     newOrder,
     exportListOrder
