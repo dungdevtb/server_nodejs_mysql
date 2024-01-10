@@ -34,6 +34,10 @@ const attributes = {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: false,
     },
+    quantity: {
+        type: DataTypes.INTEGER(10).UNSIGNED,
+        allowNull: true,
+    },
     del: {
         type: DataTypes.TINYINT(1),
         allowNull: true,

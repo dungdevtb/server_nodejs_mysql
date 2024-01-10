@@ -16,10 +16,15 @@ const newOrder = async (req, res) => {
     return orderServices.newOrder(req.body)
 }
 
+const exportListOrder = async (req, res) => {
+    return orderServices.exportListOrder(req, res)
+}
+
 module.exports = {
     getListOrder,
     getDetailOrder,
     updateStatusOrder,
-    newOrder
+    newOrder,
+    exportListOrder
 }
 

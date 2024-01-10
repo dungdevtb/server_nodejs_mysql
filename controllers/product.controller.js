@@ -20,9 +20,14 @@ const deleteProduct = async (req, res) => {
   return productServices.deleteProduct(id);
 };
 
+const exportExcelListProduct = async (req, res) => {
+  return productServices.exportListProduct(req, res);
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   createUpdateProduct,
   deleteProduct,
+  exportExcelListProduct
 };
