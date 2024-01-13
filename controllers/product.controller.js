@@ -24,10 +24,15 @@ const exportExcelListProduct = async (req, res) => {
   return productServices.exportListProduct(req, res);
 }
 
+const getListProductWeb = async (req, res) => {
+  return productServices.getAllProducts(req.query);
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   createUpdateProduct,
   deleteProduct,
-  exportExcelListProduct
+  exportExcelListProduct,
+  getListProductWeb
 };

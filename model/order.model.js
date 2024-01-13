@@ -39,8 +39,8 @@ const attributes = {
   },
   delivery_type: {//loại vận chuyển: vân chuyển thường, vận chuyển hỏa tốc
     type: DataTypes.TINYINT(1),
-    allowNull: false,
-    defaultValue: 0
+    allowNull: true,
+    defaultValue: null,
   },
   payment_type: {//loại thanh toán: thanh toán khi giao hàng, thanh toán online
     type: DataTypes.TINYINT(1),
@@ -74,7 +74,7 @@ const attributes = {
     type: DataTypes.TINYINT(1),
     allowNull: false,
     defaultValue: 0,
-    comment: '0: Tạo đơn hàng,  1: Đang chờ xác nhận(Chờ chủ Shop duyệt đơn hàng), 2: Đang giao hàng, 3: Đã hủy, 4: Thành công'
+    comment: '0: Tạo đơn hàng,  1: Đang chờ xác nhận(Chờ chủ Shop duyệt đơn hàng), 2: Đang giao hàng, 3: Đã hủy, 4: Thành công,5: Thêm vào giỏ hàng'
   },
   total: {
     // type: DataTypes.DECIMAL(20, 6),o

@@ -285,8 +285,10 @@ const deleteProduct = async (id) => {
   return record.update({ del: 1 });
 };
 
-const getListProductWeb = async () => {
-  const res = await Product.findAll({
+const getListProductWeb = async (req) => {
+
+
+  const data = await Product.findAll({
     where: {
       status: 1,
       del: 0
@@ -296,7 +298,7 @@ const getListProductWeb = async () => {
     },
     order: [['display_order', 'asc']],
   })
-  return res
+  return data
 }
 
 const exportListProduct = async (req, res) => {
