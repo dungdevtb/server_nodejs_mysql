@@ -2,7 +2,7 @@ const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
 const { Paging } = require("../config/paging");
 const { randomTransactionId } = require("../config/momo/random")
-const { Order, Voucher, OrderProduct, VoucherProduct, Customer, Product, Color, Brand, Category } = require("../model");
+const { Order, Voucher, OrderProduct, VoucherProduct, Customer, Product, Color, Brand, Category, Cart, CartProduct } = require("../model");
 const moment = require("moment");
 const excelJS = require("exceljs")
 const { formatMoney } = require("../config/common");
@@ -640,12 +640,133 @@ const exportListOrder = async (req, res) => {
     }
 }
 
+const addToCart = async (req) => {
+    try {
+        const { id, product_id, quantity } = req.cart_product
+
+        let cart = await Cart.findOne({
+            where: {
+                customer_id: req.customer_id,
+            }
+        })
+
+        if (!cart) {
+            cart = await Cart.create({
+                customer_id: req.customer_id,
+            })
+        }
+
+        const existCartProduct = await CartProduct.findOne({
+            where: {
+                id: id,
+                product_id: product_id,
+                del: 0
+            }
+        })
+
+        if (existCartProduct) {
+            // cập nhật số lượng 
+            await existCartProduct.update({
+                quantity: quantity
+            })
+        } else {
+            //thêm sản phẩm vào giỏ hảng
+            await CartProduct.create({
+                product_id: product_id,
+                cart_id: cart.id,
+                quantity: quantity,
+            })
+        }
+
+        return cart
+    } catch (error) {
+        console.log('Error addtoCart: ', error);
+        throw error
+    }
+}
+
+const removeFromCart = async (req) => {
+    try {
+        const cartProduct = await CartProduct.findOne({
+            where: {
+                id: req.id,
+                product_id: req.product_id,
+            },
+        });
+
+        if (cartProduct) {
+            // Xóa sản phẩm khỏi giỏ hàng
+            await cartProduct.destroy();
+            return true; // Trả về true nếu sản phẩm đã được xóa thành công
+        } else {
+            return false; // Trả về false nếu không tìm thấy sản phẩm trong giỏ hàng
+        }
+    } catch (error) {
+        console.log('Error removeFromCart: ', error);
+        throw error;
+    }
+};
+
+
+const getDetailCart = async (req) => {
+    const data = await Cart.findOne({
+        where: {
+            customer_id: req.customer_id,
+            del: 0
+        },
+        include: [
+            {
+                model: CartProduct,
+                attributes: {
+                    exclude: ["createdAt", "updatedAt", "del"],
+                },
+                as: 'cart_product',
+                required: false,
+                include: [
+                    {
+                        model: Product,
+                        attributes: ['id', 'brand_id', 'category_id', 'name', 'sell_price', 'image', 'description'],
+                        required: false,
+                        as: 'product',
+                        include: [
+                            {
+                                model: Brand,
+                                attributes: {
+                                    exclude: ["createdAt", "updatedAt", "del"],
+                                },
+                                required: false,
+                                as: 'brand',
+                            },
+                            {
+                                model: Category,
+                                attributes: {
+                                    exclude: ["createdAt", "updatedAt", "del"],
+                                },
+                                required: false,
+                                as: 'category',
+                            }
+                        ]
+                    }
+                ]
+            },
+        ],
+        attributes: {
+            exclude: ["updatedAt", "del", "createdAt"],
+        },
+    })
+
+    return data
+}
+
 module.exports = {
     getListOrder,
     getDetailOrder,
     updateStatusOrder,
     newOrder,
-    exportListOrder
+    exportListOrder,
+    addToCart,
+    removeFromCart,
+    getDetailCart
 }
 
 

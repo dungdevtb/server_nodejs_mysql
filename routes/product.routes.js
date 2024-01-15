@@ -21,4 +21,7 @@ svRouter.post(
 svRouter.post("/delete_product/:id", check_permission(QUAN_LY_SAN_PHAM), Response(ProductController.deleteProduct));
 
 svRouter.get("/get-list-product-web", Response(ProductController.getListProductWeb));
+
+svRouter.get("/get-detail-product", Response(ProductController.getDetailProduct));
+
 module.exports = svRouter;

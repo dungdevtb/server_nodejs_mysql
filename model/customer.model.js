@@ -9,6 +9,11 @@ class Customer extends BaseModel {
       foreignKey: "customer_id",
       as: "orders",
     })
+
+    // const Cart = require("./cart.model");
+    // this.hasOne(Cart, {
+    //   foreignKey: "customer_id",
+    // })
   }
 }
 
@@ -45,11 +50,11 @@ const attributes = {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
-  status: {
-    type: DataTypes.TINYINT(1),
-    allowNull: true,
-    default: 0,
-  },
+  // cart_id: {
+  //   type: DataTypes.INTEGER(10).UNSIGNED,
+  //   allowNull: true,
+  //   defaultValue: null,
+  // },
   del: {
     type: DataTypes.TINYINT(1),
     allowNull: true,

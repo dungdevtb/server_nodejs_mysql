@@ -34,6 +34,12 @@ class Product extends BaseModel {
       sourceKey: 'id'
     });
 
+    const CartProduct = require("./cartProduct.model");
+    this.hasMany(CartProduct, {
+      foreignKey: 'product_id',
+      sourceKey: 'id'
+    });
+
   }
 }
 

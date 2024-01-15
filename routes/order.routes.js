@@ -14,4 +14,10 @@ svRouter.post("/update-status-order", check_permission(QUAN_LY_DON_HANG), Respon
 
 svRouter.post("/new-order", Response(OrderController.newOrder));
 
+svRouter.post("/add-to-cart", Response(OrderController.addToCart));
+
+svRouter.post("/remove-from-cart", Response(OrderController.removeFromCart));
+
+svRouter.get("/get-detail-cart", Response(OrderController.getDetailCart));
+
 module.exports = svRouter;

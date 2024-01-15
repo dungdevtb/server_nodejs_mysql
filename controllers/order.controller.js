@@ -16,15 +16,30 @@ const newOrder = async (req, res) => {
     return orderServices.newOrder(req.body)
 }
 
+
 const exportListOrder = async (req, res) => {
     return orderServices.exportListOrder(req, res)
 }
 
+const addToCart = async (req, res) => {
+    return orderServices.addToCart(req.body)
+}
+
+const removeFromCart = async (req, res) => {
+    return orderServices.removeFromCart(req.body)
+}
+
+const getDetailCart = async (req, res) => {
+    return orderServices.getDetailCart(req.query)
+}
 module.exports = {
     getListOrder,
     getDetailOrder,
     updateStatusOrder,
     newOrder,
-    exportListOrder
+    exportListOrder,
+    getDetailCart,
+    addToCart,
+    removeFromCart
 }
 

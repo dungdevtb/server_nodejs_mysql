@@ -286,8 +286,6 @@ const deleteProduct = async (id) => {
 };
 
 const getListProductWeb = async (req) => {
-
-
   const data = await Product.findAll({
     where: {
       status: 1,
@@ -298,6 +296,89 @@ const getListProductWeb = async (req) => {
     },
     order: [['display_order', 'asc']],
   })
+  return data
+}
+
+const getDetailProduct = async (req) => {
+  let where = {
+    id: req.id,
+    del: 0,
+  }
+
+  const data = await Product.findOne({
+    where: {
+      ...where,
+    },
+    attributes: {
+      exclude: ["updatedAt", "category_id", "Brand_id", 'brand_id'],
+    },
+    include: [
+      {
+        model: Category,
+        as: "category",
+        attributes: ["id", "name"],
+        required: false,
+        where: {
+          del: 0,
+        },
+      },
+      {
+        model: Brand,
+        as: "brand",
+        attributes: ["id", "name"],
+        required: false,
+        where: {
+          del: 0,
+        },
+      },
+      {
+        model: Color,
+        as: "colors",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "del"],
+        },
+        required: false,
+        where: {
+          del: 0,
+        },
+      },
+      {
+        model: Size,
+        as: "sizes",
+        required: false,
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "del"],
+        },
+        where: {
+          del: 0,
+        },
+        include: [
+          {
+            model: SizeColor,
+            as: "size_color",
+            attributes: ["id"],
+            required: false,
+            where: {
+              del: 0,
+            },
+            include: [
+              {
+                model: Color,
+                as: "color",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "del"],
+                },
+                required: false,
+                where: {
+                  del: 0,
+                },
+              },
+            ],
+          }
+        ]
+      }
+    ],
+  });
   return data
 }
 
@@ -526,6 +607,7 @@ module.exports = {
   getProductById,
   createUpdateProduct,
   deleteProduct,
+  exportListProduct,
   getListProductWeb,
-  exportListProduct
+  getDetailProduct
 };

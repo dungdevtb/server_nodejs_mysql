@@ -28,11 +28,16 @@ const getListProductWeb = async (req, res) => {
   return productServices.getAllProducts(req.query);
 }
 
+const getDetailProduct = async (req, res) => {
+  return productServices.getDetailProduct(req.query);
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   createUpdateProduct,
   deleteProduct,
   exportExcelListProduct,
-  getListProductWeb
+  getListProductWeb,
+  getDetailProduct
 };

@@ -2,14 +2,8 @@ const { sequelize } = require("../config/db.config");
 const BaseModel = require("./BaseModel");
 const { DataTypes } = require("sequelize");
 
-class OrderProduct extends BaseModel {
+class CartProduct extends BaseModel {
     static association() {
-        const Order = require("./order.model");
-        this.belongsTo(Order, {
-            foreignKey: "order_id",
-            as: "order",
-        });
-
         const Product = require("./product.model");
         this.belongsTo(Product, {
             foreignKey: "product_id",
@@ -30,10 +24,9 @@ const attributes = {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: false,
     },
-    order_id: {
+    cart_id: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: true,
-        defaultValue: null
     },
     quantity: {
         type: DataTypes.INTEGER(10).UNSIGNED,
@@ -55,9 +48,9 @@ const attributes = {
 }
 
 const options = {
-    tableName: "order_product",
+    tableName: "cart_product",
 }
 
-OrderProduct.init(attributes, { ...options, sequelize });
+CartProduct.init(attributes, { ...options, sequelize });
 
-module.exports = OrderProduct;
+module.exports = CartProduct;
