@@ -707,7 +707,6 @@ const removeFromCart = async (req) => {
     }
 };
 
-
 const getDetailCart = async (req) => {
     const data = await Cart.findOne({
         where: {

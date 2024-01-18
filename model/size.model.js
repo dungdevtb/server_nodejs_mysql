@@ -27,7 +27,7 @@ const attributes = {
     autoIncrement: true,
   },
   size: {
-    type: DataTypes.STRING(255),
+    type: DataTypes.INTEGER(10),
     allowNull: true,
   },
   product_id: {

@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
 const { Paging } = require("../config/paging");
-const { Product, Category, Brand, Size, SizeColor, Color } = require("../model");
+const { Product, Category, Brand, Size, SizeColor, Color, Comment, Customer } = require("../model");
 const excelJS = require("exceljs")
 const { formatMoney } = require("../config/common");
 
@@ -110,6 +110,28 @@ const getAllProducts = async (data) => {
             ],
           }
         ]
+      },
+      {
+        model: Comment,
+        as: "comments",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "del"],
+        },
+        required: false,
+        where: {
+          del: 0,
+        },
+        include: {
+          model: Customer,
+          as: "customer",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "del"],
+          },
+          required: false,
+          where: {
+            del: 0,
+          }
+        }
       }
     ],
   });

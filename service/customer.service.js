@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { Customer } = require("../model");
+const { Customer, Comment } = require("../model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/auth.config");
@@ -357,11 +357,22 @@ const exportListCustomer = async (req, res) => {
     }
 }
 
+const createComment = async (data) => {
+    try {
+        const comment = await Comment.create(data)
+
+        return comment
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     register,
     login,
     getListCustomer,
     updateCustomer,
     deleteCustomer,
-    exportListCustomer
+    exportListCustomer,
+    createComment
 }

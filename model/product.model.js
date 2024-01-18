@@ -40,6 +40,12 @@ class Product extends BaseModel {
       sourceKey: 'id'
     });
 
+    const Comment = require("./comment.model");
+    this.hasMany(Comment, {
+      foreignKey: 'product_id',
+      sourceKey: 'id',
+      as: 'comments'
+    })
   }
 }
 

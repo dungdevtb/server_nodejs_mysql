@@ -23,6 +23,7 @@ const PostTag = require("./postTag.model");
 const PostHookTag = require("./postHookTag.model");
 const Cart = require("./cart.model")
 const CartProduct = require("./cartProduct.model")
+const Comment = require("./comment.model");
 
 // Tutorial.sync(); //create table
 // Product.sync();
@@ -68,5 +69,6 @@ module.exports = {
   PostTag,
   PostHookTag,
   Cart,
-  CartProduct
+  CartProduct,
+  Comment
 };

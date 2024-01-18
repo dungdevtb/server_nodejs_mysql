@@ -25,11 +25,16 @@ const exportListCustomer = async (req, res) => {
     return customerServices.exportListCustomer(req, res);
 }
 
+const createComment = async (req, res) => {
+    return customerServices.createComment(req.body);
+}
+
 module.exports = {
     login,
     register,
     getListCustomer,
     updateCustomer,
     deleteCustomer,
-    exportListCustomer
+    exportListCustomer,
+    createComment
 }

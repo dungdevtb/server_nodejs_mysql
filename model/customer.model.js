@@ -14,6 +14,12 @@ class Customer extends BaseModel {
     // this.hasOne(Cart, {
     //   foreignKey: "customer_id",
     // })
+
+    const Comment = require("./comment.model");
+    this.hasMany(Comment, {
+      foreignKey: "customer_id",
+      as: "comments",
+    })
   }
 }
 
