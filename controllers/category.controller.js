@@ -1,5 +1,6 @@
 const { categoryServices } = require("../service");
 
+//category
 const getAllCategorys = async (req, res) => {
   const data = req.query;
   return categoryServices.getAllCategorys(data);
@@ -21,6 +22,7 @@ const deleteCategory = async (req, res) => {
   return categoryServices.deleteCategory(id);
 };
 
+//brand
 const getListBrand = async (req, res) => {
   const data = req.query;
   return categoryServices.getListBrand(data);
@@ -42,6 +44,28 @@ const deleteBrand = async (req, res) => {
   return categoryServices.deleteBrand(id);
 };
 
+//product_type
+const getListProductType = async (req, res) => {
+  const data = req.query;
+  return categoryServices.getListProductType(data);
+};
+
+const getProductTypeById = async (req, res) => {
+  const { id } = req.params;
+  return categoryServices.getProductTypeById(id);
+};
+
+const createUpdateProductType = async (req, res) => {
+  const data = req.body;
+
+  return categoryServices.createUpdateProductType(data);
+};
+
+const deleteProductType = async (req, res) => {
+  const { id } = req.params;
+  return categoryServices.deleteProductType(id);
+};
+
 
 module.exports = {
   getAllCategorys,
@@ -51,5 +75,9 @@ module.exports = {
   getListBrand,
   getBrandById,
   createUpdateBrand,
-  deleteBrand
+  deleteBrand,
+  getListProductType,
+  getProductTypeById,
+  createUpdateProductType,
+  deleteProductType,
 };

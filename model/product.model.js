@@ -16,6 +16,12 @@ class Product extends BaseModel {
       as: "brand",
     });
 
+    const ProductType = require("./productType.model");
+    this.belongsTo(ProductType, {
+      foreignKey: "product_type_id",
+      as: "product_type",
+    });
+
     const Size = require("./size.model");
     this.hasMany(Size, {
       foreignKey: "product_id",
@@ -105,6 +111,10 @@ const attributes = {
     allowNull: true,
   },
   brand_id: {
+    type: DataTypes.INTEGER(10).UNSIGNED,
+    allowNull: true,
+  },
+  product_type_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
   },

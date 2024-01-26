@@ -2,11 +2,11 @@ const { sequelize } = require("../config/connect");
 const BaseModel = require("./BaseModel");
 const { DataTypes } = require("sequelize");
 
-class Brand extends BaseModel {
+class ProductType extends BaseModel {
     static association() {
         const Product = require("./product.model");
         this.hasMany(Product, {
-            foreignKey: "brand_id",
+            foreignKey: "product_type_id",
             as: "products",
         })
     }
@@ -43,9 +43,9 @@ const attributes = {
 };
 
 const options = {
-    tableName: "brand",
+    tableName: "product_type",
 };
 
-Brand.init(attributes, { ...options, sequelize });
+ProductType.init(attributes, { ...options, sequelize });
 
-module.exports = Brand;
+module.exports = ProductType;

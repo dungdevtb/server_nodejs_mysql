@@ -9,6 +9,7 @@ const Crawl = require("./crawl.model");
 const Permission = require("./permission.model");
 const RolePermission = require("./rolePermission.model");
 const Brand = require("./brand.model")
+const ProductType = require("./productType.model")
 const Size = require("./size.model")
 const SizeColor = require("./sizeColor.model")
 const Color = require("./color.model")
@@ -56,6 +57,7 @@ module.exports = {
   Permission,
   RolePermission,
   Brand,
+  ProductType,
   Size,
   SizeColor,
   Color,

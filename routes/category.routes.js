@@ -55,4 +55,28 @@ svRouter.post(
   Response(CategoryController.deleteBrand)
 );
 
+svRouter.get(
+  "/api/product_type/get_list_product_type",
+  check_permission(QUAN_LY_DANH_MUC),
+  Response(CategoryController.getListProductType)
+);
+
+svRouter.get(
+  "/api/product_type/get_product_type/:id",
+  check_permission(QUAN_LY_DANH_MUC),
+  Response(CategoryController.getProductTypeById)
+);
+
+svRouter.post(
+  "/api/product_type/create_update_product_type",
+  check_permission(QUAN_LY_DANH_MUC),
+  Response(CategoryController.createUpdateProductType)
+);
+
+svRouter.post(
+  "/api/product_type/delete_product_type/:id",
+  check_permission(QUAN_LY_DANH_MUC),
+  Response(CategoryController.deleteProductType)
+);
+
 module.exports = svRouter;

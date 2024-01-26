@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
 const { Paging } = require("../config/paging");
-const { Product, Category, Brand, Size, SizeColor, Color, Comment, Customer } = require("../model");
+const { Product, Category, Brand, Size, SizeColor, Color, Comment, Customer, ProductType } = require("../model");
 const excelJS = require("exceljs")
 const { formatMoney } = require("../config/common");
 
@@ -62,6 +62,15 @@ const getAllProducts = async (data) => {
         where: {
           del: 0,
         },
+      },
+      {
+        model: ProductType,
+        as: "product_type",
+        attributes: ["id", "name"],
+        required: false,
+        where: {
+          del: 0,
+        }
       },
       {
         model: Color,
@@ -193,6 +202,7 @@ const createUpdateProduct = async (data) => {
       sell_price: data.sell_price,
       category_id: data.category_id,
       brand_id: data.brand_id,
+      product_type_id: data.product_type_id,
       status: data.status,
       display_order: data.display_order,
       del: 0,
@@ -260,6 +270,7 @@ const createUpdateProduct = async (data) => {
       sell_price: data.sell_price,
       category_id: data.category_id,
       brand_id: data.brand_id,
+      product_type_id: data.product_type_id,
       status: data.status,
       display_order: data.display_order,
       del: 0
