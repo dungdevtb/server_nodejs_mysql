@@ -205,6 +205,8 @@ const createUpdateProduct = async (data) => {
       product_type_id: data.product_type_id,
       status: data.status,
       display_order: data.display_order,
+      discount: data.discount,
+      discount_price: data.discount_price,
       del: 0,
     });
 
@@ -273,6 +275,8 @@ const createUpdateProduct = async (data) => {
       product_type_id: data.product_type_id,
       status: data.status,
       display_order: data.display_order,
+      discount: data.discount,
+      discount_price: data.discount_price,
       del: 0
     })
 

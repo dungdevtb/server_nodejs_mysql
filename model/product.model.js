@@ -86,26 +86,14 @@ const attributes = {
     type: DataTypes.INTEGER(10),
     allowNull: true,
   },
-  // color: {
-  //   type: DataTypes.TEXT,
-  //   allowNull: true,
-  //   get: function () {
-  //     return Product.parseArr(this.getDataValue('color'));
-  //   },
-  //   set: function (val) {
-  //     this.setDataValue('color', Product.setArr(val));
-  //   }
-  // },
-  // size_quantity: {
-  //   type: DataTypes.TEXT,
-  //   allowNull: true,
-  //   get: function () {
-  //     return Product.parseArr(this.getDataValue('size_quantity'));
-  //   },
-  //   set: function (val) {
-  //     this.setDataValue('size_quantity', Product.setArr(val));
-  //   }
-  // },
+  discount: {
+    type: DataTypes.FLOAT(10, 6),
+    allowNull: true,
+  },
+  discount_price: {
+    type: DataTypes.INTEGER(10),
+    allowNull: true,
+  },
   category_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
