@@ -134,7 +134,7 @@ const getAllProducts = async (data) => {
           model: Customer,
           as: "customer",
           attributes: {
-            exclude: ["createdAt", "updatedAt", "del"],
+            exclude: ["createdAt", "updatedAt", "del", "password"],
           },
           required: false,
           where: {
@@ -413,6 +413,28 @@ const getDetailProduct = async (req) => {
             ],
           }
         ]
+      },
+      {
+        model: Comment,
+        as: "comments",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "del"],
+        },
+        required: false,
+        where: {
+          del: 0,
+        },
+        include: {
+          model: Customer,
+          as: "customer",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "del", "password"],
+          },
+          required: false,
+          where: {
+            del: 0,
+          }
+        }
       }
     ],
   });

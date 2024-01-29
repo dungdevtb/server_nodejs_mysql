@@ -37,12 +37,12 @@ const attributes = {
     type: DataTypes.STRING(255),
     allowNull: true
   },
-  delivery_type: {//loại vận chuyển: vân chuyển thường, vận chuyển hỏa tốc
+  delivery_type: {//loại vận chuyển: 0 - vân chuyển thường, 1 - vận chuyển hỏa tốc
     type: DataTypes.TINYINT(1),
     allowNull: true,
     defaultValue: null,
   },
-  payment_type: {//loại thanh toán: thanh toán khi giao hàng, thanh toán online
+  payment_type: {//loại thanh toán: 0-thanh toán khi giao hàng, 1-thanh toán online
     type: DataTypes.TINYINT(1),
     allowNull: true,
     defaultValue: null,

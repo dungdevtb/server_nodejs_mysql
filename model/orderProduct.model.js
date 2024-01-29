@@ -16,6 +16,20 @@ class OrderProduct extends BaseModel {
             as: "product",
             targetKey: "id",
         })
+
+        const Size = require("./size.model");
+        this.belongsTo(Size, {
+            foreignKey: "size_id",
+            as: "size",
+            targetKey: "id",
+        })
+
+        const Color = require("./color.model");
+        this.belongsTo(Color, {
+            foreignKey: "color_id",
+            as: "color",
+            targetKey: "id",
+        })
     }
 }
 
@@ -31,6 +45,16 @@ const attributes = {
         allowNull: false,
     },
     order_id: {
+        type: DataTypes.INTEGER(10).UNSIGNED,
+        allowNull: true,
+        defaultValue: null
+    },
+    size_id: {
+        type: DataTypes.INTEGER(10).UNSIGNED,
+        allowNull: true,
+        defaultValue: null
+    },
+    color_id: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: true,
         defaultValue: null

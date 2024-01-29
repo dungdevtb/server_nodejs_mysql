@@ -2,7 +2,7 @@ const { Op } = require("sequelize");
 const { ERROR_MESSAGE } = require("../config/error");
 const { Paging } = require("../config/paging");
 const { randomTransactionId } = require("../config/momo/random")
-const { Order, Voucher, OrderProduct, VoucherProduct, Customer, Product, Color, Brand, Category, Cart, CartProduct } = require("../model");
+const { Order, Voucher, OrderProduct, VoucherProduct, Customer, Product, Color, Brand, Category, Cart, CartProduct, Size } = require("../model");
 const moment = require("moment");
 const excelJS = require("exceljs")
 const { formatMoney } = require("../config/common");
@@ -139,7 +139,23 @@ const getListOrder = async (req) => {
                                 required: false,
                                 as: 'category',
                             }
-                        ]
+                        ],
+                    },
+                    {
+                        model: Color,
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt", "del"],
+                        },
+                        required: false,
+                        as: 'color',
+                    },
+                    {
+                        model: Size,
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt", "del"],
+                        },
+                        required: false,
+                        as: 'size',
                     }
                 ]
             },
@@ -308,6 +324,8 @@ const newOrder = async (req) => {
             await OrderProduct.create({
                 product_id: item.product_id,
                 order_id: create.id,
+                size_id: item.size_id,
+                color_id: item.color_id,
                 quantity: item.quantity,
             })
 
@@ -331,6 +349,7 @@ const newOrder = async (req) => {
                 await color.save()
             }
 
+            //chưa update quantity của đơn hàng
         }))
 
         return create
