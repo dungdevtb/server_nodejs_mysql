@@ -17,15 +17,15 @@ svRouter.post("/new-order",
     Response(OrderController.newOrder));
 
 svRouter.post("/add-to-cart",
-    // checkToken,
+    checkToken,
     Response(OrderController.addToCart));
 
 svRouter.post("/remove-from-cart",
-    // checkToken,
+    checkToken,
     Response(OrderController.removeFromCart));
 
 svRouter.get("/get-detail-cart",
-    // checkToken,
+    checkToken,
     Response(OrderController.getDetailCart));
 
 module.exports = svRouter;

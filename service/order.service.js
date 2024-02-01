@@ -661,7 +661,7 @@ const exportListOrder = async (req, res) => {
 
 const addToCart = async (req) => {
     try {
-        const { id, product_id, quantity } = req.cart_product
+        const { product_id, quantity, color_id, size_id } = req.cart_product
 
         let cart = await Cart.findOne({
             where: {
@@ -677,8 +677,8 @@ const addToCart = async (req) => {
 
         const existCartProduct = await CartProduct.findOne({
             where: {
-                id: id,
                 product_id: product_id,
+                cart_id: cart.id,
                 del: 0
             }
         })
@@ -694,6 +694,8 @@ const addToCart = async (req) => {
                 product_id: product_id,
                 cart_id: cart.id,
                 quantity: quantity,
+                size_id: size_id,
+                color_id: color_id
             })
         }
 
@@ -708,7 +710,7 @@ const removeFromCart = async (req) => {
     try {
         const cartProduct = await CartProduct.findOne({
             where: {
-                id: req.id,
+                cart_id: req.cart_id,
                 product_id: req.product_id,
             },
         });
@@ -743,7 +745,7 @@ const getDetailCart = async (req) => {
                 include: [
                     {
                         model: Product,
-                        attributes: ['id', 'brand_id', 'category_id', 'name', 'sell_price', 'image', 'description'],
+                        attributes: ['id', 'brand_id', 'category_id', 'name', 'sell_price', 'discount', 'discount_price', 'image', 'description'],
                         required: false,
                         as: 'product',
                         include: [
@@ -764,6 +766,22 @@ const getDetailCart = async (req) => {
                                 as: 'category',
                             }
                         ]
+                    },
+                    {
+                        model: Size,
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt", "del"],
+                        },
+                        required: false,
+                        as: 'size',
+                    },
+                    {
+                        model: Color,
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt", "del", "quantity"],
+                        },
+                        required: false,
+                        as: 'color',
                     }
                 ]
             },
