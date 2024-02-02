@@ -16,6 +16,14 @@ const updateCustomer = async (req, res) => {
     return customerServices.updateCustomer(req.body);
 }
 
+const getDetailCustomer = async (req, res) => {
+    return customerServices.getDetailCustomer(req.query);
+}
+
+const updateAddressWeb = async (req, res) => {
+    return customerServices.updateAddressWeb(req.body);
+}
+
 const deleteCustomer = async (req, res) => {
     const { id } = req.query;
     return customerServices.deleteCustomer(id);
@@ -34,6 +42,8 @@ module.exports = {
     register,
     getListCustomer,
     updateCustomer,
+    getDetailCustomer,
+    updateAddressWeb,
     deleteCustomer,
     exportListCustomer,
     createComment

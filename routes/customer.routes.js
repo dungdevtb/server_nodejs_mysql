@@ -14,6 +14,9 @@ svRouter.get("/get-list-customer", check_permission(QUAN_LY_NGUOI_DUNG), Respons
 svRouter.post("/update-customer", check_permission(QUAN_LY_NGUOI_DUNG), Response(CustomerController.updateCustomer));
 svRouter.post("/delete-customer", check_permission(QUAN_LY_NGUOI_DUNG), Response(CustomerController.deleteCustomer));
 
+svRouter.get("/get-detail-customer", checkToken, Response(CustomerController.getDetailCustomer));
+svRouter.post("/update-addess", checkToken, Response(CustomerController.updateAddressWeb));
+
 svRouter.post("/create-comment",
     // checkToken, 
     Response(CustomerController.createComment));

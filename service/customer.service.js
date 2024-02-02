@@ -107,8 +107,6 @@ const login = asyncHandler(async (req, res) => {
             { expiresIn: _CONF.refreshTokenLife }
         );
 
-
-
         return {
             token: accessToken,
             refreshToken: refreshToken,
@@ -171,7 +169,7 @@ const getListCustomer = asyncHandler(async (req, res) => {
     }
 })
 
-const updateCustomer = async (req, res) => {
+const updateCustomer = async (data) => {
     const check = await Customer.findOne({
         where: {
             id: data.id,
@@ -357,6 +355,36 @@ const exportListCustomer = async (req, res) => {
     }
 }
 
+const updateAddressWeb = async (data) => {
+    const check = await Customer.findOne({
+        where: {
+            id: data.id,
+            del: 0
+        }
+    })
+
+    if (!check) {
+        throw new Error("User not found!")
+    }
+
+    const update = await check.update({ ...data })
+    return update
+}
+
+const getDetailCustomer = async (data) => {
+    const detail = await Customer.findOne({
+        where: {
+            id: data.id,
+            del: 0
+        },
+        attributes: {
+            exclude: ['password', 'del', 'createdAt', 'updatedAt']
+        },
+    });
+
+    return detail
+}
+
 const createComment = async (data) => {
     try {
         const comment = await Comment.create(data)
@@ -374,5 +402,7 @@ module.exports = {
     updateCustomer,
     deleteCustomer,
     exportListCustomer,
+    getDetailCustomer,
+    updateAddressWeb,
     createComment
 }
