@@ -11,6 +11,7 @@ const Voucher = require("./voucher.routes");
 const Post = require("./post.routes");
 const Customer = require("./customer.routes");
 const Order = require("./order.routes");
+const Banner = require("./banner.routes");
 
 const { Router } = require("express");
 const routerApp = new Router();
@@ -33,5 +34,7 @@ routerApp.use("/api/post", Post);
 
 routerApp.use("/api/customer", Customer);
 routerApp.use("/api/order", Order);
+
+routerApp.use("/api/banner", Banner);
 
 module.exports = routerApp;

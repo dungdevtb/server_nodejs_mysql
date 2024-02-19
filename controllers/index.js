@@ -10,6 +10,7 @@ const VoucherController = require("./voucher.controller");
 const PostController = require("./post.controller");
 const CustomerController = require("./customer.controller");
 const OrderController = require("./order.controller");
+const BannerController = require("./banner.controller");
 
 module.exports = {
   TutorialController,
@@ -24,4 +25,5 @@ module.exports = {
   PostController,
   CustomerController,
   OrderController,
+  BannerController
 };

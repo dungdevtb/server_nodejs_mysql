@@ -10,6 +10,7 @@ const voucherServices = require("./voucher.service.js");
 const postServices = require("./post.service.js");
 const customerServices = require("./customer.service.js");
 const orderServices = require("./order.service.js");
+const bannerServices = require("./banner.service.js");
 
 module.exports = {
   tutorialServices,
@@ -23,5 +24,6 @@ module.exports = {
   voucherServices,
   postServices,
   customerServices,
-  orderServices
+  orderServices,
+  bannerServices
 };
