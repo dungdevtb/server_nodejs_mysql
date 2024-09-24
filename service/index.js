@@ -11,6 +11,7 @@ const postServices = require("./post.service.js");
 const customerServices = require("./customer.service.js");
 const orderServices = require("./order.service.js");
 const bannerServices = require("./banner.service.js");
+const guitarServices = require("./guitar.service.js")
 
 module.exports = {
   tutorialServices,
@@ -25,5 +26,6 @@ module.exports = {
   postServices,
   customerServices,
   orderServices,
-  bannerServices
+  bannerServices,
+  guitarServices
 };

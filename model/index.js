@@ -26,6 +26,7 @@ const Cart = require("./cart.model")
 const CartProduct = require("./cartProduct.model")
 const Comment = require("./comment.model");
 const Banner = require("./banner.model")
+const Guitar = require("./guitar.model")
 
 // Tutorial.sync(); //create table
 // Product.sync();
@@ -74,5 +75,6 @@ module.exports = {
   Cart,
   CartProduct,
   Comment,
-  Banner
+  Banner,
+  Guitar
 };

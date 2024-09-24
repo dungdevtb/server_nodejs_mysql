@@ -630,7 +630,7 @@ const exportListProduct = async (req, res) => {
       }
     });
 
-    products.map((user, index) => {
+    products.map((product, index) => {
       worksheet.getRow(6 + index).eachCell((cell) => {
         cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
         cell.border = {

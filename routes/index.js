@@ -12,6 +12,7 @@ const Post = require("./post.routes");
 const Customer = require("./customer.routes");
 const Order = require("./order.routes");
 const Banner = require("./banner.routes");
+const Guitar = require("./guitar.routes");
 
 const { Router } = require("express");
 const routerApp = new Router();
@@ -36,5 +37,6 @@ routerApp.use("/api/customer", Customer);
 routerApp.use("/api/order", Order);
 
 routerApp.use("/api/banner", Banner);
+routerApp.use("/api/guitar", Guitar);
 
 module.exports = routerApp;
